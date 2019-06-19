@@ -13,6 +13,10 @@ public class Library {
         albums = new HashSet<Album>();
     }
 
+    /**
+     *
+     * @param song
+     */
     public void addSong(Song song){
         allSongs.add(song);
         Album album = isAlbum(song);
