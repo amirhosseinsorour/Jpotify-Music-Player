@@ -18,13 +18,19 @@ public class LeftToolbar extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         gbc.fill = GridBagConstraints.HORIZONTAL ;
+        gbc.ipadx  = 200 ;
 
-        searchButton = new JButton();
-        searchButton.setText("Search");
-        searchButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Search.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
+        searchField = new JPanel();
+        searchField.setLayout(new BorderLayout());
+        ImageIcon searchIcon = new ImageIcon(new ImageIcon("src\\Icons\\Search.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT));
+        JButton search = new JButton(searchIcon);
+        search.setBackground(new Color(0x4B829C));
+        JLabel searchLabel = new JLabel(searchIcon);
+        searchLabel.setBackground(new Color(0x4B829C));
+        searchField.add(search , BorderLayout.EAST);
+        searchField.add(new JTextField() , BorderLayout.CENTER);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        searchButton.setBackground(new Color(0x4B829C));
-        add(searchButton , gbc);
+        add(searchField , gbc);
 
         libraryButton = new JButton();
         libraryButton.setText("My Library");
@@ -61,17 +67,7 @@ public class LeftToolbar extends JPanel {
         addToLibraryButton.setBackground(new Color(0x4B829C));
         add(addToLibraryButton , gbc);
 
-        searchField = new JPanel();
-        searchField.setLayout(new BorderLayout());
-        ImageIcon searchIcon = new ImageIcon(new ImageIcon("src\\Icons\\Search.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT));
-        JButton search = new JButton(searchIcon);
-        search.setBackground(new Color(0x4B829C));
-        JLabel searchLabel = new JLabel(searchIcon);
-        searchLabel.setBackground(new Color(0x4B829C));
-        searchField.add(search , BorderLayout.EAST);
-        searchField.add(new JTextField() , BorderLayout.CENTER);
-        gbc.gridy = 6 ;
-        add(searchField , gbc);
+
     }
 
     public static void main(String[] args) {

@@ -1,12 +1,9 @@
-import com.mpatric.mp3agic.Mp3File;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.util.Scanner;
 /*
 public class Main {
     public static void main(String[] args) throws Exception{
