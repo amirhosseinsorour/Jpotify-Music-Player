@@ -3,7 +3,7 @@ import javazoom.jl.player.Player;
 
 import java.io.FileInputStream;
 
-public class Song extends Mp3File{
+public class Song extends Mp3File implements Runnable{
 
     private String songAddress ;
 
@@ -56,6 +56,7 @@ public class Song extends Mp3File{
         FileInputStream input = new FileInputStream(songAddress);
         Player player = new Player(input);
         player.play();
+
     }
 
     @Override
@@ -64,5 +65,12 @@ public class Song extends Mp3File{
         if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()))
             return true ;
         else return false ;
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.play();
+        }catch (Exception ignored){}
     }
 }
