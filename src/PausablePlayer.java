@@ -165,13 +165,13 @@ public class PausablePlayer {
             player.play();
 
             // after 5 secs, pause
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
             player.pause();
 
             // after 5 secs, resume
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
             player.resume();
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }

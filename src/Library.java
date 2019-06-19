@@ -6,6 +6,9 @@ public class Library {
     HashSet<Album> albums ;
 
     public Library() {
+        /**
+         * these hashsests are the lists that we can add something new to them without repetition.
+         */
         allSongs = new HashSet<Song>();
         albums = new HashSet<Album>();
     }
