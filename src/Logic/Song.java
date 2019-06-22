@@ -1,3 +1,5 @@
+package Logic;
+
 import com.mpatric.mp3agic.Mp3File;
 
 import javazoom.jl.player.Player;
