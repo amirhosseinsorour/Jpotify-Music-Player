@@ -72,6 +72,13 @@ public class Song extends Mp3File{
         return songAddress;
     }
 
+    public String getSongLentgh(){
+        int time = (int)getLengthInSeconds();
+        int minute = time / 60;
+        int second = time % 60;
+        return minute + ":" + ( (second < 10) ? ("0" + second) : second );
+    }
+
     public void play() throws Exception {
         FileInputStream input = new FileInputStream(songAddress);
         Player player = new Player(input);
