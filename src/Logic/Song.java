@@ -1,11 +1,8 @@
-package Logic;
-
 import com.mpatric.mp3agic.Mp3File;
 import javazoom.jl.player.Player;
 
 import java.io.FileInputStream;
-
-public class Song extends Mp3File implements Runnable{
+public class Song extends Mp3File {
 
     private String songAddress ;
 
@@ -14,17 +11,22 @@ public class Song extends Mp3File implements Runnable{
         songAddress = address ;
     }
 
-    public Song(){
-        super();
-    }
-
+    /**get the title of the song
+     *
+     * @return a string that is the title of song
+     */
     public String getTitle(){
-        if(hasId3v1Tag())
+        if(hasId3v1Tag())//if the format of our song is Id3v1tag
             return getId3v1Tag().getTitle();
         else if(hasId3v2Tag())
             return getId3v2Tag().getTitle();
         else return "" ;
     }
+
+    /**
+     *
+     * @return a string that is the artist of song
+     */
 
     public String getArtist(){
         if(hasId3v1Tag())
@@ -34,6 +36,10 @@ public class Song extends Mp3File implements Runnable{
         else return "" ;
     }
 
+    /**
+     *
+     * @return the album of song
+     */
     public String getAlbum(){
         if(hasId3v1Tag())
             return getId3v1Tag().getAlbum();
@@ -58,10 +64,6 @@ public class Song extends Mp3File implements Runnable{
         else return null ;
     }
 
-    public String getAddress() {
-        return songAddress;
-    }
-
     public void play() throws Exception {
         FileInputStream input = new FileInputStream(songAddress);
         Player player = new Player(input);
@@ -69,15 +71,9 @@ public class Song extends Mp3File implements Runnable{
 
     }
 
-    public String getSongLength(){
-        int lengthInSecond = (int)getLengthInSeconds();
-        int minute = lengthInSecond / 60 ;
-        int second = lengthInSecond % 60 ;
-
-        return minute + ":" + ( (second<10) ? ("0" + second) : (second) ) ;
-
-    }
-
+    /**
+     * @return a boolean
+     */
     @Override
     public boolean equals(Object obj){
         Song song = (Song)obj ;
@@ -86,10 +82,10 @@ public class Song extends Mp3File implements Runnable{
         else return false ;
     }
 
-    @Override
+/*    @Override
     public void run() {
         try {
             this.play();
         }catch (Exception ignored){}
-    }
+    }*/
 }
