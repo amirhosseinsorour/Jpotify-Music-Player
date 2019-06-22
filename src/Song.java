@@ -1,12 +1,13 @@
 import com.mpatric.mp3agic.Mp3File;
+
 import javazoom.jl.player.Player;
 
 import java.io.FileInputStream;
-public class Song extends Mp3File {
+public class Song extends Mp3File{
 
     private String songAddress ;
 
-    public Song(String address) throws Exception {
+    public Song(String address) throws Exception{
         super(address);
         songAddress = address ;
     }
@@ -82,7 +83,7 @@ public class Song extends Mp3File {
         else return false ;
     }
 
-/*    @Override
+   /* @Override
     public void run() {
         try {
             this.play();

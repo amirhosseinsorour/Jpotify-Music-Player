@@ -3,6 +3,7 @@ import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 /*
 public class Main {
@@ -36,6 +37,7 @@ public class PausablePlayer {
     private final static int FINISHED = 3;
 
     // the player actually doing all the work
+
     private final Player player;
 
     // locking object used to communicate with player thread
@@ -153,25 +155,34 @@ public class PausablePlayer {
     }
 
     // demo how to use
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws Exception {
+        Song song =new Song("Sirvan Khosravi Na Naro.mp3");
         try {
-            FileInputStream input = new FileInputStream("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
+            FileInputStream input = new FileInputStream(song.getFilename());
+
             PausablePlayer player = new PausablePlayer(input);
 
             // start playing
             player.play();
 
             // after 5 secs, pause
-            //Thread.sleep(5000);
+            Thread.sleep(5000);
             player.pause();
 
             // after 5 secs, resume
-            //Thread.sleep(5000);
-            player.resume();
-            //Thread.sleep(5000);
-        } catch (final Exception e) {
+            Thread.sleep(5000);
+
+
+            //while((i=input.read())!=-1){}
+            while(song.getLength()!=0){
+                player.resume();
+
+
+
+         }}catch (final Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
 }
