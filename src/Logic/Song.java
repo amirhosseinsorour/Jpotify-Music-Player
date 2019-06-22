@@ -39,6 +39,7 @@ public class Song extends Mp3File{
         else return "" ;
     }
 
+
     /**
      *
      * @return the album of song
@@ -65,6 +66,10 @@ public class Song extends Mp3File{
         if(hasId3v2Tag())
             return getId3v2Tag().getAlbumImage();
         else return null ;
+    }
+
+    public String getAddress(){
+        return songAddress;
     }
 
     public void play() throws Exception {
