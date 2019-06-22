@@ -129,9 +129,12 @@ public class LeftToolbar extends JPanel implements ActionListener {
                     try {
                         Song newSong = new Song(file.getPath());
                         Library.addSong(newSong);
+                        ShowSongsPanel.songsToShow.add(newSong);
+                        System.out.println(newSong.getTitle());
                     }catch (Exception ex){ex.printStackTrace();}
                 }
-                ShowSongsPanel.songsToShow = Library.allSongs ;
+//                ShowSongsPanel.songsToShow = Library.allSongs ;
+                MainPanel.showSongsPanel = new ShowSongsPanel() ;
                 showSongsPanel.updatePanel();
             }
         }

@@ -26,11 +26,13 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     }
 
     public void updatePanel(){
-        songsToShow = Library.allSongs ;
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
+        songsAsButtons = new ArrayList<JButton>();
         for(Song song : songsToShow){
             JButton songAsButton = new JButton(new ImageIcon(new ImageIcon(song.getImage()).getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
             songAsButton.setText(song.getTitle());
+            if(isInButtons(songAsButton))
+                continue;
             songAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             songAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             songAsButton.addActionListener(this);
@@ -43,6 +45,14 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             }
         }
         System.out.println(Library.allSongs.size());
+    }
+
+    private boolean isInButtons(JButton button){
+        for(JButton btn : songsAsButtons){
+            if(btn.getText().equals(button.getText()))
+                return true;
+        }
+        return false ;
     }
 
     @Override

@@ -9,7 +9,7 @@ public class MainPanel extends JFrame {
 
     public LeftToolbar leftToolbar ;
     public PlayerPanel playerPanel ;
-    public ShowSongsPanel showSongsPanel ;
+    public static ShowSongsPanel showSongsPanel ;
 
     public MainPanel() throws Exception{
         super("JPotify Music Player");
@@ -33,5 +33,6 @@ public class MainPanel extends JFrame {
         playerPanel = new PlayerPanel();
         add(playerPanel , BorderLayout.SOUTH);
     }
+
 
 }
