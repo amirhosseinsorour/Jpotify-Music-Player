@@ -7,6 +7,7 @@ import javafx.scene.LightBase;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Timer;
 
@@ -26,7 +27,7 @@ public class Test extends JSlider{
     public static void main(String[] args) throws Exception{
         Song song = new Song("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");          //temporary
         PlayerPanel.setSong(song);
-        ShowSongsPanel.songsToShow = new HashSet<Song>();
+        ShowSongsPanel.songsToShow = new ArrayList<>();
         MainPanel mainPanel = new MainPanel();
         mainPanel.setVisible(true);
         Thread.sleep(3000);

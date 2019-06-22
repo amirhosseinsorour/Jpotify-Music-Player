@@ -13,7 +13,7 @@ import java.util.HashSet;
 public class ShowSongsPanel extends JPanel implements ActionListener {
 
     public static ArrayList<JButton> songsAsButtons ;
-    public static HashSet<Song> songsToShow ;
+    public static ArrayList<Song> songsToShow ;
     private static GridBagConstraints gbc ;
 
     public ShowSongsPanel() {
@@ -26,13 +26,14 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     }
 
     public void updatePanel(){
+        removeAll();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
         songsAsButtons = new ArrayList<JButton>();
+        songsToShow = Library.allSongs;
         for(Song song : songsToShow){
+            System.out.println(song.getTitle());
             JButton songAsButton = new JButton(new ImageIcon(new ImageIcon(song.getImage()).getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
             songAsButton.setText(song.getTitle());
-            if(isInButtons(songAsButton))
-                continue;
             songAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             songAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             songAsButton.addActionListener(this);
@@ -57,6 +58,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+//        System.out.println(((JButton)e.getSource()).getText());
+//        ((JButton)e.getSource()).setVisible(false);
     }
 }

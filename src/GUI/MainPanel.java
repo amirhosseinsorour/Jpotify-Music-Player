@@ -10,6 +10,7 @@ public class MainPanel extends JFrame {
     public LeftToolbar leftToolbar ;
     public PlayerPanel playerPanel ;
     public static ShowSongsPanel showSongsPanel ;
+    private static JScrollPane scrollPane ;
 
     public MainPanel() throws Exception{
         super("JPotify Music Player");
@@ -20,7 +21,7 @@ public class MainPanel extends JFrame {
         getContentPane().setBackground(new Color(0x7EB4D3));
 
         showSongsPanel = new ShowSongsPanel();
-        JScrollPane scrollPane = new JScrollPane(showSongsPanel);
+        scrollPane = new JScrollPane(showSongsPanel);
         add(scrollPane , BorderLayout.CENTER);
 
         JPanel leftPanel = new JPanel();
@@ -34,5 +35,9 @@ public class MainPanel extends JFrame {
         add(playerPanel , BorderLayout.SOUTH);
     }
 
+    public static void updateSongsPanel(){
+        showSongsPanel = new ShowSongsPanel();
+        scrollPane = new JScrollPane(showSongsPanel);
+    }
 
 }

@@ -1,15 +1,16 @@
 package Logic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Library {
 
-    public static HashSet<Song> allSongs ;
-    public static HashSet<Album> albums ;
+    public static ArrayList<Song> allSongs ;
+    public static ArrayList<Album> albums ;
 
     public Library() {
-        allSongs = new HashSet<Song>();
-        albums = new HashSet<Album>();
+        allSongs = new ArrayList<>();
+        albums = new ArrayList<>();
     }
 
     public static void addSong(Song song){
