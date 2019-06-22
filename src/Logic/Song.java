@@ -1,3 +1,5 @@
+package Logic;
+
 import com.mpatric.mp3agic.Mp3File;
 import javazoom.jl.player.Player;
 
@@ -10,6 +12,10 @@ public class Song extends Mp3File implements Runnable{
     public Song(String address) throws Exception {
         super(address);
         songAddress = address ;
+    }
+
+    public Song(){
+        super();
     }
 
     public String getTitle(){
@@ -52,10 +58,23 @@ public class Song extends Mp3File implements Runnable{
         else return null ;
     }
 
+    public String getAddress() {
+        return songAddress;
+    }
+
     public void play() throws Exception {
         FileInputStream input = new FileInputStream(songAddress);
         Player player = new Player(input);
         player.play();
+
+    }
+
+    public String getSongLength(){
+        int lengthInSecond = (int)getLengthInSeconds();
+        int minute = lengthInSecond / 60 ;
+        int second = lengthInSecond % 60 ;
+
+        return minute + ":" + ( (second<10) ? ("0" + second) : (second) ) ;
 
     }
 

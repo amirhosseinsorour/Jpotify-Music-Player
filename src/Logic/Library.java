@@ -1,16 +1,18 @@
+package Logic;
+
 import java.util.HashSet;
 
 public class Library {
 
-    HashSet<Song> allSongs ;
-    HashSet<Album> albums ;
+    public static HashSet<Song> allSongs ;
+    public static HashSet<Album> albums ;
 
     public Library() {
         allSongs = new HashSet<Song>();
         albums = new HashSet<Album>();
     }
 
-    public void addSong(Song song){
+    public static void addSong(Song song){
         allSongs.add(song);
         Album album = isAlbum(song);
         if(album != null){
@@ -28,7 +30,7 @@ public class Library {
         }
     }
 
-    private Album isAlbum(Song song){
+    private static Album isAlbum(Song song){
         String albumName = song.getAlbum() ;
         try {
             for (Album album : albums) {

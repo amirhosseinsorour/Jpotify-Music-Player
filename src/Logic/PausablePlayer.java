@@ -1,3 +1,6 @@
+package Logic;
+
+import GUI.MainPanel;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
@@ -7,7 +10,7 @@ import java.io.InputStream;
 /*
 public class Main {
     public static void main(String[] args) throws Exception{
-        Song song = new Song("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
+        Logic.Song song = new Logic.Song("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
 
         Thread thread = new Thread(song , "1");
         thread.start();
@@ -153,9 +156,10 @@ public class PausablePlayer {
     }
 
     // demo how to use
-    public static void main(String[] argv) {
-        try {
-            FileInputStream input = new FileInputStream("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
+    public static void main(String[] argv) throws Exception{
+//        try {
+            MainPanel mainPanel = new MainPanel();
+/*            FileInputStream input = new FileInputStream("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
             PausablePlayer player = new PausablePlayer(input);
 
             // start playing
@@ -167,11 +171,25 @@ public class PausablePlayer {
 
             // after 5 secs, resume
             Thread.sleep(5000);
-            player.resume();
-            Thread.sleep(5000);
+
+//            while (true){
+                player.resume();
+//            }
+
         } catch (final Exception e) {
             throw new RuntimeException(e);
-        }
+
+        }*/
+
+/*        SuperAdvancedPlayer superAdvancedPlayer = new SuperAdvancedPlayer(new Song("Ebi - Jane Javani.mp3"));
+        Thread thread = new Thread(superAdvancedPlayer);
+        thread.run();
+        Thread.sleep(5000);
+
+        superAdvancedPlayer.pause();
+        Thread.sleep(5000);
+
+        superAdvancedPlayer.play();*/
     }
 
 }
