@@ -72,7 +72,7 @@ public class Song extends Mp3File{
         return songAddress;
     }
 
-    public String getSongLentgh(){
+    public String getSongLength(){
         int time = (int)getLengthInSeconds();
         int minute = time / 60;
         int second = time % 60;
@@ -88,8 +88,7 @@ public class Song extends Mp3File{
 
     /**
      * @return a boolean
-     */
-    @Override
+     */@Override
     public boolean equals(Object obj){
         Song song = (Song)obj ;
         if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()))
