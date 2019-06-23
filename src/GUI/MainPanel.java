@@ -16,7 +16,6 @@ public class MainPanel extends JFrame {
         super("JPotify Music Player");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(1600,900);
-        setResizable(false);
         setLocation(50,50);
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(0x7EB4D3));

@@ -183,6 +183,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         try {
             setSong(newSong);
             isPlaying = false ;
+            songCurrentTimePassed.setText("0:00");
             try {
                 timer.setSongStatus(isPlaying);
             }catch (NullPointerException ignored){}
