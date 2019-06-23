@@ -1,14 +1,15 @@
 package Logic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Album {
 
-    private HashSet<Song> songs ;
+    private ArrayList<Song> songs ;
     private String nameOfAlbum;
 
     public Album(String name) {
-        songs = new HashSet<Song>();
+        songs = new ArrayList<>();
         nameOfAlbum = name ;
     }
 
@@ -20,4 +21,7 @@ public class Album {
         songs.add(song);
     }
 
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
 }

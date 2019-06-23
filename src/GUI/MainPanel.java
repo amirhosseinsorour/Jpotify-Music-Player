@@ -16,11 +16,16 @@ public class MainPanel extends JFrame {
         super("JPotify Music Player");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(1600,900);
+        setResizable(false);
         setLocation(50,50);
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(0x7EB4D3));
 
+        playerPanel = new PlayerPanel();
+        add(playerPanel , BorderLayout.SOUTH);
+
         showSongsPanel = new ShowSongsPanel();
+        showSongsPanel.setPlayerPanel(playerPanel);
         scrollPane = new JScrollPane(showSongsPanel);
         add(scrollPane , BorderLayout.CENTER);
 
@@ -29,10 +34,11 @@ public class MainPanel extends JFrame {
         leftToolbar = new LeftToolbar();
         leftToolbar.setShowSongsPanel(showSongsPanel);
         leftPanel.add(leftToolbar , BorderLayout.NORTH);
+//        JScrollPane toolbarScrollPane = new JScrollPane(leftPanel);
+//        toolbarScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//        toolbarScrollPane.setBackground(new Color(0xD3B599C7));
         add(leftPanel , BorderLayout.WEST);
 
-        playerPanel = new PlayerPanel();
-        add(playerPanel , BorderLayout.SOUTH);
     }
 
     public static void updateSongsPanel(){

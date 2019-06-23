@@ -4,10 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import Logic.PausablePlayer;
-import Logic.Song;
-import Logic.SongTimer;
-import Logic.SuperAdvancedPlayer;
+import Logic.*;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
@@ -186,6 +183,9 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         try {
             setSong(newSong);
             isPlaying = false ;
+            try {
+                timer.setSongStatus(isPlaying);
+            }catch (NullPointerException ignored){}
             timer = new SongTimer(songSlider , songCurrentTimePassed);
             timer.setTask();
             timer.setMaxTime((int)song.getLengthInSeconds());
@@ -197,6 +197,8 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             songAlbum.setText(song.getAlbum());
             player.close();
             player = new PausablePlayer(new FileInputStream(song.getAddress()));
+            Library.allSongs.remove(song);
+            Library.allSongs.add(song);
             songSlider.setMaximum((int) song.getLengthInSeconds());
             songSlider.setValue(0);
             songTotalLengthLabel.setText(song.getSongLength());

@@ -120,6 +120,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
             jfc.setDialogTitle("Add new Song");
             jfc.setMultiSelectionEnabled(true);
             jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfc.setCurrentDirectory(new File("D:\\Music"));
             jfc.setAcceptAllFileFilterUsed(false);
             jfc.addChoosableFileFilter(new FileNameExtensionFilter("mp3 Files" , "mp3"));
             int returnValue = jfc.showOpenDialog(null);
@@ -135,8 +136,10 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 }
 //                ShowSongsPanel.songsToShow = Library.allSongs ;
                 MainPanel.updateSongsPanel();
-                showSongsPanel.updatePanel();
+                showSongsPanel.updatePanelbySong(Library.allSongs);
             }
         }
+        if(e.getSource().equals(libraryButton))
+            showSongsPanel.createNorthPanel(libraryButton.getText());
     }
 }

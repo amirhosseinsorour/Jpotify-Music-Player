@@ -88,7 +88,8 @@ public class Song extends Mp3File{
 
     /**
      * @return a boolean
-     */@Override
+     */
+    @Override
     public boolean equals(Object obj){
         Song song = (Song)obj ;
         if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()))
