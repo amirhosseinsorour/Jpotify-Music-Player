@@ -1,6 +1,7 @@
 package GUI;
 
 import Logic.Album;
+import Logic.Artist;
 import Logic.Library;
 import Logic.Song;
 
@@ -15,6 +16,7 @@ import java.util.HashSet;
 public class ShowSongsPanel extends JPanel implements ActionListener {
 
     private JPanel songsPanel ;
+    private JPanel northOptionPanel ;
     private JButton songs ;
     private JButton albums ;
     private JButton artists ;
@@ -22,11 +24,13 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     public static ArrayList<Song> songsToShow ;
     public static HashMap<JButton , Song> getSongByButton ;
     public static HashMap<JButton , Album> getAlbumByButton ;
+    public static HashMap<JButton , Artist> getArtistByButton ;
     private static GridBagConstraints gbc ;
 
     public ShowSongsPanel() {
         getSongByButton = new HashMap<JButton, Song>();
         getAlbumByButton = new HashMap<JButton, Album>();
+        getArtistByButton = new HashMap<JButton , Artist>();
         setLayout(new BorderLayout());
         setBackground(new Color(0x7EB4D3));
 
@@ -51,7 +55,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsToShow = songsToUpdate;
         for(int i  = songsToShow.size()-1 ; i >=0 ; i--){
             Song song = songsToShow.get(i);
-            JButton songAsButton = new JButton(new ImageIcon(new ImageIcon(song.getImage()).getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
+            JButton songAsButton = new JButton(new ImageIcon(song.getImage().getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
             songAsButton.setText(song.getTitle());
             songAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             songAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -65,6 +69,30 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             }
         }
         add(songsPanel , BorderLayout.CENTER);
+        songsPanel.repaint();
+        songsPanel.revalidate();
+    }
+
+    public void updatePanelByArtist(){
+        songsPanel.removeAll();
+        gbc.gridx = 0 ;     gbc.gridy = 0 ;
+        getArtistByButton = new HashMap<JButton, Artist>();
+        for(int i = Library.artists.size()-1 ; i >= 0 ; i--){
+            Artist artist = Library.artists.get(i);
+            JButton artistAsButton = new JButton(new ImageIcon(artist.getSongs().get(0).getImage().getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
+            artistAsButton.addActionListener(this);
+            artistAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+            artistAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            artistAsButton.setText(artist.getName());
+            getArtistByButton.put(artistAsButton , artist);
+            songsPanel.add(artistAsButton , gbc);
+            if(++gbc.gridx > 2){
+                gbc.gridx = 0 ;
+                gbc.gridy ++ ;
+            }
+        }
+        add(songsPanel , BorderLayout.CENTER);
+        songsPanel.repaint();
         songsPanel.revalidate();
     }
 
@@ -74,7 +102,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         getAlbumByButton = new HashMap<JButton, Album>();
         for(int i = Library.albums.size()-1 ; i >= 0 ; i--){
             Album album = Library.albums.get(i);
-            JButton albumAsButton = new JButton(new ImageIcon(new ImageIcon(album.getSongs().get(0).getImage()).getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
+            JButton albumAsButton = new JButton(new ImageIcon(album.getSongs().get(0).getImage().getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
             albumAsButton.setText(album.getName());
             albumAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             albumAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -88,37 +116,38 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             }
         }
         add(songsPanel , BorderLayout.CENTER);
+        songsPanel.repaint();
         songsPanel.revalidate();
-
     }
 
     public void createNorthPanel(String type){
-        JPanel northOptionPanel = new JPanel();
-        northOptionPanel.setBackground(new Color(0x4C6A7D));
-        northOptionPanel.setLayout(new FlowLayout(3 ,5,5));
+        if(northOptionPanel == null) {
+            northOptionPanel = new JPanel();
+            northOptionPanel.setBackground(new Color(0x4C6A7D));
+            northOptionPanel.setLayout(new FlowLayout(3, 5, 5));
 //        GridBagConstraints ngbc = new GridBagConstraints();
 
-        if(type.equals("Library")){
+            if (type.equals("Library")) {
 //            ngbc.gridx = 0 ;
 //            ngbc.gridy = 0 ;
 //            ngbc.fill = GridBagConstraints.HORIZONTAL ;
 //            ngbc.insets = new Insets(10,10,10,10);
-            songs = new JButton("Songs");
-            songs.setSize(50 , 10);
-            songs.addActionListener(this);
-            northOptionPanel.add(songs);
+                songs = new JButton("Songs");
+                songs.setSize(50, 10);
+                songs.addActionListener(this);
+                northOptionPanel.add(songs);
 
 //            ngbc.gridx = 1 ;
-            albums = new JButton("Albums");
-            albums.addActionListener(this);
-            northOptionPanel.add(albums);
+                albums = new JButton("Albums");
+                albums.addActionListener(this);
+                northOptionPanel.add(albums);
 
 //            ngbc.gridx = 2 ;
-            artists = new JButton("Artists");
-            artists.addActionListener(this);
-            northOptionPanel.add(artists);
-
-            add(northOptionPanel , BorderLayout.NORTH);
+                artists = new JButton("Artists");
+                artists.addActionListener(this);
+                northOptionPanel.add(artists);
+            }
+            add(northOptionPanel, BorderLayout.NORTH);
             revalidate();
         }
     }
@@ -131,6 +160,8 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
         else if(buttonPressed.equals(albums))
             updatePanelByAlbum();
+        else if(buttonPressed.equals(artists))
+            updatePanelByArtist();
 
         else if(getSongByButton.keySet().contains(buttonPressed)) {
             playerPanel.updatePanel(getSongByButton.get(buttonPressed));
@@ -138,9 +169,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
 
         else if(getAlbumByButton.keySet().contains(buttonPressed)){
-//            System.out.println(getAlbumByButton.get(buttonPressed));
             updatePanelbySong(getAlbumByButton.get(buttonPressed).getSongs());
         }
+        else if(getArtistByButton.keySet().contains(buttonPressed))
+            updatePanelbySong(getArtistByButton.get(buttonPressed).getSongs());
 
     }
 }

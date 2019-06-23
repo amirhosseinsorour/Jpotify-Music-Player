@@ -4,7 +4,11 @@ import com.mpatric.mp3agic.Mp3File;
 
 import javazoom.jl.player.Player;
 
+import javax.swing.*;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+
 public class Song extends Mp3File{
 
     private String songAddress ;
@@ -19,11 +23,14 @@ public class Song extends Mp3File{
      * @return a string that is the title of song
      */
     public String getTitle(){
+        String title = "";
         if(hasId3v1Tag())//if the format of our song is Id3v1tag
-            return getId3v1Tag().getTitle();
+            title = getId3v1Tag().getTitle();
         else if(hasId3v2Tag())
-            return getId3v2Tag().getTitle();
-        else return "" ;
+            title = getId3v2Tag().getTitle();
+        if(title.isEmpty() || title.equals(""))
+            return "Unknown Title" ;
+        else return title ;
     }
 
     /**
@@ -32,11 +39,14 @@ public class Song extends Mp3File{
      */
 
     public String getArtist(){
-        if(hasId3v1Tag())
-            return getId3v1Tag().getArtist();
+        String artist = "";
+        if(hasId3v1Tag())//if the format of our song is Id3v1tag
+            artist = getId3v1Tag().getArtist();
         else if(hasId3v2Tag())
-            return getId3v2Tag().getArtist();
-        else return "" ;
+            artist = getId3v2Tag().getArtist();
+        if(artist.isEmpty() || artist.equals(""))
+            return "Unknown Artist" ;
+        else return artist ;
     }
 
 
@@ -45,11 +55,14 @@ public class Song extends Mp3File{
      * @return the album of song
      */
     public String getAlbum(){
-        if(hasId3v1Tag())
-            return getId3v1Tag().getAlbum();
+        String album = "";
+        if(hasId3v1Tag())//if the format of our song is Id3v1tag
+            album = getId3v1Tag().getAlbum();
         else if(hasId3v2Tag())
-            return getId3v2Tag().getAlbum();
-        else return "" ;
+            album = getId3v2Tag().getAlbum();
+        if(album.isEmpty() || album.equals(""))
+            return "Unknown Album" ;
+        else return album ;
     }
 
     public String getTrack(){
@@ -62,10 +75,10 @@ public class Song extends Mp3File{
 
     //getYear Here if necessary
 
-    public byte[] getImage(){
-        if(hasId3v2Tag())
-            return getId3v2Tag().getAlbumImage();
-        else return null ;
+    public ImageIcon getImage(){
+        if(hasId3v2Tag() && getId3v2Tag().getAlbumImage() != null)
+            return new ImageIcon(getId3v2Tag().getAlbumImage());
+        else return new ImageIcon("src\\Icons\\Unknown.png") ;
     }
 
     public String getAddress(){
@@ -92,7 +105,7 @@ public class Song extends Mp3File{
     @Override
     public boolean equals(Object obj){
         Song song = (Song)obj ;
-        if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()))
+        if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()) && song.getLength() == getLength())
             return true ;
         else return false ;
     }

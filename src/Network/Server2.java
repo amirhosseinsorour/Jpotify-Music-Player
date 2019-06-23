@@ -60,6 +60,6 @@ public class Server2 {
     }
 
     public static void main(String[] args) {
-        new Server();
+        new Server2();
     }
 }

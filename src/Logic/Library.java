@@ -9,17 +9,22 @@ public class Library {
 
     public static ArrayList<Song> allSongs ;
     public static ArrayList<Album> albums ;
+    public static ArrayList<Artist> artists ;
 
     public Library() {
-        allSongs = new ArrayList<>();
-        albums = new ArrayList<>();
+        allSongs = new ArrayList<Song>();
+        albums = new ArrayList<Album>();
+        artists = new ArrayList<Artist>();
     }
 
     public static void addSong(Song song){
         if(isNewSong(song))
             allSongs.add(song);
         else return ;
+
         Album album = isNewAlbum(song);
+        Artist artist = isNewArtist(song);
+
         if(album != null){
             album.addSong(song);
         }
@@ -27,6 +32,15 @@ public class Library {
             album = new Album(song.getAlbum());
             album.addSong(song);
             albums.add(album);
+        }
+
+        if(artist != null){
+            artist.addSong(song);
+        }
+        else {
+            artist = new Artist(song.getArtist());
+            artist.addSong(song);
+            artists.add(artist);
         }
     }
 
@@ -47,6 +61,17 @@ public class Library {
         return null ;
     }
 
+    private static Artist isNewArtist(Song song){
+        String artistName = song.getArtist() ;
+        try {
+            for (Artist artist : artists) {
+                if (artist.getName().equals(artistName))
+                    return artist;
+            }
+        }catch (NullPointerException ignored){}
+        return null ;
+    }
+
     private static boolean isNewSong(Song newSong){
         for (Song song : allSongs){
             if(song.equals(newSong))
@@ -55,7 +80,7 @@ public class Library {
         return true ;
     }
 
-    public static Song findSong(String title){
+/*    public static Song findSong(String title){
         for (Song song : allSongs) {
             if (song.getTitle().equals(title))
                 return song;
@@ -69,5 +94,5 @@ public class Library {
                 return album;
         }
         return null ;
-    }
+    }*/
 }

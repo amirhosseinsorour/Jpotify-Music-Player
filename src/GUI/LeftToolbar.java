@@ -66,21 +66,21 @@ public class LeftToolbar extends JPanel implements ActionListener {
         libraryButton.setBackground(new Color(0xBB366F));
         add(libraryButton , gbc) ;
 
-        recentPlaysButton = new JButton();
-        recentPlaysButton.addActionListener(this);
-        recentPlaysButton.setText("Recent Plays");
-        recentPlaysButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\RecentPlays.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 2 ;
-        recentPlaysButton.setBackground(new Color(0xBB366F));
-        add(recentPlaysButton , gbc);
-
         playListsButton = new JButton();
         playListsButton.addActionListener(this);
         playListsButton.setText("PlayLists");
         playListsButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\PlayLists.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 3 ;
+        gbc.gridy = 2 ;
         playListsButton.setBackground(new Color(0xBB366F));
         add(playListsButton , gbc);
+
+        recentPlaysButton = new JButton();
+        recentPlaysButton.addActionListener(this);
+        recentPlaysButton.setText("Recent Plays");
+        recentPlaysButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\RecentPlays.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
+        gbc.gridy = 3 ;
+        recentPlaysButton.setBackground(new Color(0xBB366F));
+        add(recentPlaysButton , gbc);
 
         favoritesButton = new JButton();
         favoritesButton.addActionListener(this);
@@ -130,12 +130,14 @@ public class LeftToolbar extends JPanel implements ActionListener {
                     try {
                         Song newSong = new Song(file.getPath());
                         Library.addSong(newSong);
+                        System.out.println(newSong.getTitle());
 //                        ShowSongsPanel.songsToShow.add(newSong);
 //                        System.out.println(newSong.getTitle());
                     } catch (Exception ex){ex.printStackTrace();}
                 }
 //                ShowSongsPanel.songsToShow = Library.allSongs ;
                 MainPanel.updateSongsPanel();
+//                showSongsPanel.createNorthPanel("Library");
                 showSongsPanel.updatePanelbySong(Library.allSongs);
             }
         }

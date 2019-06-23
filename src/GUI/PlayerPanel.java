@@ -55,7 +55,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.insets = new Insets(10 ,10,10,10);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        songPicLabel = new JLabel(new ImageIcon(new ImageIcon(song.getImage()).getImage().getScaledInstance(230,230,Image.SCALE_DEFAULT)));
+        songPicLabel = new JLabel(new ImageIcon(song.getImage().getImage().getScaledInstance(230,230,Image.SCALE_DEFAULT)));
         songInfoPanel.add(songPicLabel , gbc);
 
         JPanel songInfoInnerPanel = new JPanel();
@@ -192,7 +192,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             timer.setMaxTime((int)song.getLengthInSeconds());
             timer.setSongStatus(isPlaying);
 
-            songPicLabel.setIcon(new ImageIcon(new ImageIcon(song.getImage()).getImage().getScaledInstance(230, 230, Image.SCALE_DEFAULT)));
+            songPicLabel.setIcon(new ImageIcon(song.getImage().getImage().getScaledInstance(230, 230, Image.SCALE_DEFAULT)));
             songTitle.setText(song.getTitle());
             songArtist.setText(song.getArtist());
             songAlbum.setText(song.getAlbum());

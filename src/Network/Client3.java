@@ -136,6 +136,6 @@ public class Client3 {
         writer.println("BYE");
     }
     public static void main(String[] args) {
-        new Client();
+        new Client3();
     }
 }

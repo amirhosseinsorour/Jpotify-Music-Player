@@ -120,6 +120,6 @@ public class Server3 {
     }
 
     public static void main(String[] args) {
-        new Server();
+        new Server3();
     }
 }
