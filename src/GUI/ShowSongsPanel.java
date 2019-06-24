@@ -23,6 +23,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     private JButton removePlaylist ;
     private JButton addNewSong ;
     private JButton removeSong ;
+    private JButton editSongs ;
     private PlayerPanel playerPanel ;
     public static ArrayList<Song> songsToShow ;
     public static HashMap<JButton , Song> getSongByButton ;
@@ -184,6 +185,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
             removeSong = new JButton("Remove Song");
             removeSong.addActionListener(this);
+
+            editSongs = new JButton("Edit Songs");
+            editSongs.addActionListener(this);
         }
         try {
             northOptionPanel.removeAll();
@@ -200,9 +204,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             northOptionPanel.add(addNewPlaylist);
             northOptionPanel.add(removePlaylist);
         }
-        else if(type.equals("Playlist"))
-
-
+        else if(type.equals("Playlist")){
+            northOptionPanel.add(addNewSong);
+            northOptionPanel.add(removeSong);
+            northOptionPanel.add(editSongs);
+        }
         add(northOptionPanel, BorderLayout.NORTH);
         revalidate();
         optionPanelType = type ;
@@ -220,7 +226,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             updatePanelByArtist();
         else if(buttonPressed.equals(addNewPlaylist)){
             String newPlaylistName = JOptionPane.showInputDialog(null ,"Enter Playlist Name" ,"New Playlist",JOptionPane.INFORMATION_MESSAGE );
-            System.out.println(newPlaylistName);
+//            System.out.println(newPlaylistName);
             if(newPlaylistName == null) return;
             if(newPlaylistName.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Enter Valid Name!", "Create New Playlist", JOptionPane.ERROR_MESSAGE);
@@ -234,22 +240,29 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
         else if(buttonPressed.equals(removePlaylist)){
             String name = JOptionPane.showInputDialog(null ,"Enter Playlist Name" ,"Remove Playlist",JOptionPane.INFORMATION_MESSAGE );
+            if(name == null)
+                return;
             Playlist playlist = Library.findPlaylist(name);
             if(playlist == null)
                 JOptionPane.showMessageDialog(null, "Playlist Doesn't Exists!" , "Remove Playlist" , JOptionPane.ERROR_MESSAGE);
             else{
                 int choice = JOptionPane.showConfirmDialog(null , "Are you sure you want to permanently remove playlist \"" + name + "\" ?");
                 switch (choice){
-                    case JOptionPane.YES_OPTION :
+                    case JOptionPane.OK_OPTION :
                         Library.playlists.remove(playlist);
                         break;
-                    case JOptionPane.NO_OPTION :
                     case JOptionPane.CANCEL_OPTION :
+                    case JOptionPane.CLOSED_OPTION :
+                    case JOptionPane.NO_OPTION :
                         return;
                 }
                 JOptionPane.showMessageDialog(null , "Playlist Removed!" , "Remove Playlist" , JOptionPane.PLAIN_MESSAGE);
                 updatePanelByPlaylist();
             }
+        }
+
+        else if(buttonPressed.equals(addNewSong)){
+
         }
 
         else if(getSongByButton.keySet().contains(buttonPressed)) {
@@ -262,6 +275,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
         else if(getArtistByButton.keySet().contains(buttonPressed))
             updatePanelbySong(getArtistByButton.get(buttonPressed).getSongs());
-
+        else if(getPlaylistByButton.keySet().contains(buttonPressed)) {
+            createNorthPanel("Playlist");
+            updatePanelbySong(getPlaylistByButton.get(buttonPressed).getSongs());
+        }
     }
 }

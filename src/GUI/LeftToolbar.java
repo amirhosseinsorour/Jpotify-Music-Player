@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
 
 public class LeftToolbar extends JPanel implements ActionListener {
 
@@ -19,6 +20,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
     private JButton playListsButton ;
     private JButton favoritesButton ;
     private JButton addToLibraryButton ;
+    private JTextField searchTextField ;
     private JPanel searchField ;
     private ShowSongsPanel showSongsPanel ;
 
@@ -40,18 +42,23 @@ public class LeftToolbar extends JPanel implements ActionListener {
 //        JLabel searchLabel = new JLabel(searchIcon);
 //        searchLabel.setBackground(new Color(0x4B829C));
         searchField.add(searchButton , BorderLayout.EAST);
-        JTextField searchTextField = new JTextField("Search Music");
+        searchTextField = new JTextField("Search Music");
         searchTextField.addFocusListener(new FocusListener() {
+//            private boolean isFocused = true ;
             @Override
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField) e.getComponent();
                 source.setText("");
+//                isFocused = true ;
 //                source.removeActionListener(this);
             }
             @Override
             public void focusLost(FocusEvent e) {
                 JTextField source = (JTextField) e.getComponent();
-                source.setText("Search Music");
+                if(source.getText().equals("")) {
+                    source.setText("Search Music");
+                }
+//                isFocused = false;
             }
         });
         searchField.add(searchTextField , BorderLayout.CENTER);
@@ -152,6 +159,19 @@ public class LeftToolbar extends JPanel implements ActionListener {
             try {
                 showSongsPanel.updatePanelByPlaylist();
             }catch (NullPointerException ignored){}
+        }
+        if(e.getSource().equals(searchButton)){
+            String name = searchTextField.getText();
+            System.out.println(name);
+            ArrayList<Song> foundSongs = new ArrayList<Song>();
+            for(Song song : Library.allSongs){
+                if(song.getTitle().contains(name) || song.getAlbum().contains(name) || song.getArtist().contains(name)) {
+                    foundSongs.add(song);
+                    System.out.println(song.getTitle());
+                }
+            }
+            showSongsPanel.updatePanelbySong(foundSongs);
+            searchTextField.setText("Search Music");
         }
     }
 }
