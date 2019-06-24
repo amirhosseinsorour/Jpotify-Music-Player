@@ -1,10 +1,16 @@
 package Logic;
 
 import GUI.MainPanel;
+import GUI.PlayerPanel;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 /*
@@ -155,41 +161,22 @@ public class PausablePlayer {
         }
     }
 
-    // demo how to use
     public static void main(String[] argv) throws Exception{
-//        try {
-            MainPanel mainPanel = new MainPanel();
-/*            FileInputStream input = new FileInputStream("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
-            PausablePlayer player = new PausablePlayer(input);
+        try {
+//            FileInputStream input = new FileInputStream("Ebi - Jane Javani.mp3");
+//            AdvancedPlayer player = new AdvancedPlayer(input);
+//            player.play();
 
-            // start playing
-            player.play();
 
-            // after 5 secs, pause
-            Thread.sleep(5000);
-            player.pause();
+//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3"));
+//            Clip clip =AudioSystem.getClip();
+//            clip.open(audioInputStream);
+//            clip.loop(Clip.LOOP_CONTINUOUSLY);
+//            clip.start();
 
-            // after 5 secs, resume
-            Thread.sleep(5000);
 
-//            while (true){
-                player.resume();
-//            }
+        } catch (Exception e) {e.printStackTrace();}
 
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-
-        }*/
-
-/*        SuperAdvancedPlayer superAdvancedPlayer = new SuperAdvancedPlayer(new Song("Ebi - Jane Javani.mp3"));
-        Thread thread = new Thread(superAdvancedPlayer);
-        thread.run();
-        Thread.sleep(5000);
-
-        superAdvancedPlayer.pause();
-        Thread.sleep(5000);
-
-        superAdvancedPlayer.play();*/
     }
 
 }

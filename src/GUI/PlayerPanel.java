@@ -198,8 +198,18 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             songAlbum.setText(song.getAlbum());
             player.close();
             player = new PausablePlayer(new FileInputStream(song.getAddress()));
+
             Library.allSongs.remove(song);
             Library.allSongs.add(song);
+
+            Album album = Library.findAlbum(song.getAlbum());
+            Library.albums.remove(album);
+            Library.albums.add(album);
+
+            Artist artist = Library.findArtist(song.getArtist());
+            Library.artists.remove(artist);
+            Library.artists.add(artist);
+
             songSlider.setMaximum((int) song.getLengthInSeconds());
             songSlider.setValue(0);
             songTotalLengthLabel.setText(song.getSongLength());

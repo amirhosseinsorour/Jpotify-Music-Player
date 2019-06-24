@@ -80,19 +80,19 @@ public class Library {
         return true ;
     }
 
-/*    public static Song findSong(String title){
-        for (Song song : allSongs) {
-            if (song.getTitle().equals(title))
-                return song;
+    public static Artist findArtist(String name){
+        for (Artist artist : artists) {
+            if (artist.getName().equals(name))
+                return artist;
         }
         return null ;
     }
 
-    public static Album findAlbum(String title){
+    public static Album findAlbum(String name){
         for (Album album : albums) {
-            if (album.getName().equals(title))
+            if (album.getName().equals(name))
                 return album;
         }
         return null ;
-    }*/
+    }
 }
