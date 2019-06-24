@@ -10,6 +10,7 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -163,6 +164,7 @@ public class PausablePlayer {
 
     public static void main(String[] argv) throws Exception{
         try {
+
 //            FileInputStream input = new FileInputStream("Ebi - Jane Javani.mp3");
 //            AdvancedPlayer player = new AdvancedPlayer(input);
 //            player.play();

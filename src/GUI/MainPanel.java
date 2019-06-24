@@ -36,6 +36,11 @@ public class MainPanel extends JFrame {
 //        JScrollPane toolbarScrollPane = new JScrollPane(leftPanel);
 //        toolbarScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 //        toolbarScrollPane.setBackground(new Color(0xD3B599C7));
+
+        JPanel justForColor = new JPanel();
+        justForColor.setBackground(new Color(0xD3B599C7,true));
+        leftPanel.add(justForColor , BorderLayout.CENTER);
+
         add(leftPanel , BorderLayout.WEST);
 
     }

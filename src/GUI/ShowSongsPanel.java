@@ -1,9 +1,6 @@
 package GUI;
 
-import Logic.Album;
-import Logic.Artist;
-import Logic.Library;
-import Logic.Song;
+import Logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,19 +9,26 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 public class ShowSongsPanel extends JPanel implements ActionListener {
 
     private JPanel songsPanel ;
     private JPanel northOptionPanel ;
+    private String optionPanelType ;
     private JButton songs ;
     private JButton albums ;
     private JButton artists ;
+    private JButton addNewPlaylist ;
+    private JButton removePlaylist ;
+    private JButton addNewSong ;
+    private JButton removeSong ;
     private PlayerPanel playerPanel ;
     public static ArrayList<Song> songsToShow ;
     public static HashMap<JButton , Song> getSongByButton ;
     public static HashMap<JButton , Album> getAlbumByButton ;
     public static HashMap<JButton , Artist> getArtistByButton ;
+    public static HashMap<JButton , Playlist> getPlaylistByButton ;
     private static GridBagConstraints gbc ;
 
     public ShowSongsPanel() {
@@ -33,6 +37,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         getArtistByButton = new HashMap<JButton , Artist>();
         setLayout(new BorderLayout());
         setBackground(new Color(0x7EB4D3));
+        optionPanelType = "null" ;
 
         songsPanel = new JPanel();
         songsPanel.setLayout(new GridBagLayout());
@@ -120,36 +125,87 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
+    public void updatePanelByPlaylist(){
+        songsPanel.removeAll();
+        gbc.gridx = gbc.gridy = 0 ;
+        getPlaylistByButton = new HashMap<JButton, Playlist>();
+        for(Playlist playlist : Library.playlists){
+            JButton playlistAsButton ;
+            int r = playlist.getSongs().size();
+            if(r == 0)
+                playlistAsButton = new JButton(new ImageIcon(new ImageIcon("src\\Icons\\Unknown.png").getImage().getScaledInstance(180, 180, Image.SCALE_DEFAULT)));
+            else {
+                r = new Random().nextInt(r) ;
+                playlistAsButton = new JButton(new ImageIcon(playlist.getSongs().get(r).getImage().getImage().getScaledInstance(180, 180, Image.SCALE_DEFAULT)));
+            }
+            playlistAsButton.setText(playlist.getName());
+            playlistAsButton.setText(playlist.getName());
+            playlistAsButton.addActionListener(this);
+            playlistAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            playlistAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+            getPlaylistByButton.put(playlistAsButton , playlist);
+            songsPanel.add(playlistAsButton , gbc);
+            gbc.gridx = gbc.gridx + 1 ;
+            if(gbc.gridx == 3){
+                gbc.gridx = 0 ;
+                ++gbc.gridy ;
+            }
+        }
+        add(songsPanel , BorderLayout.CENTER);
+        songsPanel.repaint();
+        songsPanel.revalidate();
+    }
+
     public void createNorthPanel(String type){
-        if(northOptionPanel == null) {
+        if(optionPanelType.equals(type))
+            return;
+        if(northOptionPanel == null){
             northOptionPanel = new JPanel();
             northOptionPanel.setBackground(new Color(0x4C6A7D));
-            northOptionPanel.setLayout(new FlowLayout(3, 5, 5));
-//        GridBagConstraints ngbc = new GridBagConstraints();
+            northOptionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-            if (type.equals("Library")) {
-//            ngbc.gridx = 0 ;
-//            ngbc.gridy = 0 ;
-//            ngbc.fill = GridBagConstraints.HORIZONTAL ;
-//            ngbc.insets = new Insets(10,10,10,10);
-                songs = new JButton("Songs");
-                songs.setSize(50, 10);
-                songs.addActionListener(this);
-                northOptionPanel.add(songs);
+            songs = new JButton("Songs");
+            songs.addActionListener(this);
 
-//            ngbc.gridx = 1 ;
-                albums = new JButton("Albums");
-                albums.addActionListener(this);
-                northOptionPanel.add(albums);
+            albums = new JButton("Albums");
+            albums.addActionListener(this);
 
-//            ngbc.gridx = 2 ;
-                artists = new JButton("Artists");
-                artists.addActionListener(this);
-                northOptionPanel.add(artists);
-            }
-            add(northOptionPanel, BorderLayout.NORTH);
-            revalidate();
+            artists = new JButton("Artists");
+            artists.addActionListener(this);
+
+            addNewPlaylist = new JButton("Add new Playlist");
+            addNewPlaylist.addActionListener(this);
+
+            removePlaylist = new JButton("Remove Playlist");
+            removePlaylist.addActionListener(this);
+
+            addNewSong = new JButton("Add Song");
+            addNewSong.addActionListener(this);
+
+            removeSong = new JButton("Remove Song");
+            removeSong.addActionListener(this);
         }
+        try {
+            northOptionPanel.removeAll();
+            northOptionPanel.repaint();
+            northOptionPanel.revalidate();
+        }catch (NullPointerException ignored){}
+
+        if (type.equals("Library")) {
+            northOptionPanel.add(songs);
+            northOptionPanel.add(albums);
+            northOptionPanel.add(artists);
+        }
+        else if(type.equals("Playlists")){
+            northOptionPanel.add(addNewPlaylist);
+            northOptionPanel.add(removePlaylist);
+        }
+        else if(type.equals("Playlist"))
+
+
+        add(northOptionPanel, BorderLayout.NORTH);
+        revalidate();
+        optionPanelType = type ;
     }
 
     @Override
@@ -162,6 +218,39 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             updatePanelByAlbum();
         else if(buttonPressed.equals(artists))
             updatePanelByArtist();
+        else if(buttonPressed.equals(addNewPlaylist)){
+            String newPlaylistName = JOptionPane.showInputDialog(null ,"Enter Playlist Name" ,"New Playlist",JOptionPane.INFORMATION_MESSAGE );
+            System.out.println(newPlaylistName);
+            if(newPlaylistName == null) return;
+            if(newPlaylistName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter Valid Name!", "Create New Playlist", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(Library.findPlaylist(newPlaylistName) != null)
+                JOptionPane.showMessageDialog(null, "Enter Valid Name!", "Create New Playlist", JOptionPane.ERROR_MESSAGE);
+            Playlist newPlaylist = new Playlist(newPlaylistName);
+            Library.playlists.add(newPlaylist);
+            updatePanelByPlaylist();
+        }
+        else if(buttonPressed.equals(removePlaylist)){
+            String name = JOptionPane.showInputDialog(null ,"Enter Playlist Name" ,"Remove Playlist",JOptionPane.INFORMATION_MESSAGE );
+            Playlist playlist = Library.findPlaylist(name);
+            if(playlist == null)
+                JOptionPane.showMessageDialog(null, "Playlist Doesn't Exists!" , "Remove Playlist" , JOptionPane.ERROR_MESSAGE);
+            else{
+                int choice = JOptionPane.showConfirmDialog(null , "Are you sure you want to permanently remove playlist \"" + name + "\" ?");
+                switch (choice){
+                    case JOptionPane.YES_OPTION :
+                        Library.playlists.remove(playlist);
+                        break;
+                    case JOptionPane.NO_OPTION :
+                    case JOptionPane.CANCEL_OPTION :
+                        return;
+                }
+                JOptionPane.showMessageDialog(null , "Playlist Removed!" , "Remove Playlist" , JOptionPane.PLAIN_MESSAGE);
+                updatePanelByPlaylist();
+            }
+        }
 
         else if(getSongByButton.keySet().contains(buttonPressed)) {
             playerPanel.updatePanel(getSongByButton.get(buttonPressed));

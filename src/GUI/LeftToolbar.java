@@ -15,7 +15,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
 
     private JButton searchButton ;
     private JButton libraryButton ;
-    private JButton recentPlaysButton ;
+    private JButton sharedPlaylistButton ;
     private JButton playListsButton ;
     private JButton favoritesButton ;
     private JButton addToLibraryButton ;
@@ -74,13 +74,13 @@ public class LeftToolbar extends JPanel implements ActionListener {
         playListsButton.setBackground(new Color(0xBB366F));
         add(playListsButton , gbc);
 
-        recentPlaysButton = new JButton();
-        recentPlaysButton.addActionListener(this);
-        recentPlaysButton.setText("Recent Plays");
-        recentPlaysButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\RecentPlays.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
+        sharedPlaylistButton = new JButton();
+        sharedPlaylistButton.addActionListener(this);
+        sharedPlaylistButton.setText("Shared Playlist");
+        sharedPlaylistButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\SharedPlaylist.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 3 ;
-        recentPlaysButton.setBackground(new Color(0xBB366F));
-        add(recentPlaysButton , gbc);
+        sharedPlaylistButton.setBackground(new Color(0xBB366F));
+        add(sharedPlaylistButton , gbc);
 
         favoritesButton = new JButton();
         favoritesButton.addActionListener(this);
@@ -137,11 +137,21 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 }
 //                ShowSongsPanel.songsToShow = Library.allSongs ;
                 MainPanel.updateSongsPanel();
-//                showSongsPanel.createNorthPanel("Library");
+                showSongsPanel.createNorthPanel("Library");
                 showSongsPanel.updatePanelbySong(Library.allSongs);
             }
         }
-        if(e.getSource().equals(libraryButton))
-            showSongsPanel.createNorthPanel(libraryButton.getText());
+        if(e.getSource().equals(libraryButton)) {
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("Library");
+            showSongsPanel.updatePanelbySong(Library.allSongs);
+        }
+        if(e.getSource().equals(playListsButton)){
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("Playlists");
+            try {
+                showSongsPanel.updatePanelByPlaylist();
+            }catch (NullPointerException ignored){}
+        }
     }
 }

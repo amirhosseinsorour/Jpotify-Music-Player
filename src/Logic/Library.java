@@ -10,11 +10,13 @@ public class Library {
     public static ArrayList<Song> allSongs ;
     public static ArrayList<Album> albums ;
     public static ArrayList<Artist> artists ;
+    public static ArrayList<Playlist> playlists ;
 
     public Library() {
         allSongs = new ArrayList<Song>();
         albums = new ArrayList<Album>();
         artists = new ArrayList<Artist>();
+        playlists = new ArrayList<Playlist>();
     }
 
     public static void addSong(Song song){
@@ -44,10 +46,9 @@ public class Library {
         }
     }
 
-    public void removeSong(Song song) {
-        if (allSongs.contains(song)) {
-            allSongs.remove(song);
-        }
+    public void addNewPlaylist(String name){
+        Playlist newPlaylist = new Playlist(name);
+        playlists.add(newPlaylist);
     }
 
     private static Album isNewAlbum(Song song){
@@ -92,6 +93,14 @@ public class Library {
         for (Album album : albums) {
             if (album.getName().equals(name))
                 return album;
+        }
+        return null ;
+    }
+
+    public static Playlist findPlaylist(String name){
+        for(Playlist playlist : playlists){
+            if(playlist.getName().equals(name))
+                return playlist ;
         }
         return null ;
     }
