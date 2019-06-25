@@ -16,7 +16,8 @@ public abstract class SongInfo {
     }
 
     public void addSong(Song song){
-        songs.add(song);
+        if(!songs.contains(song))
+            songs.add(song);
     }
 
     public ArrayList<Song> getSongs() {

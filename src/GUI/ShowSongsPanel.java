@@ -24,7 +24,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     private JButton addNewSong ;
     private JButton removeSong ;
     private JButton editSongs ;
+    private JLabel addNewSongLabel ;
+    private JLabel removeSongLabel ;
+    private JLabel songsFound ;
     private PlayerPanel playerPanel ;
+    private Playlist currentSelectedPlaylist ;
     public static ArrayList<Song> songsToShow ;
     public static HashMap<JButton , Song> getSongByButton ;
     public static HashMap<JButton , Album> getAlbumByButton ;
@@ -53,9 +57,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         this.playerPanel = playerPanel;
     }
 
-    public void updatePanelbySong(ArrayList<Song> songsToUpdate){
+    public void updatePanelBySong(ArrayList<Song> songsToUpdate , ActionListener actionListener){
         songsPanel.removeAll();
-        songsPanel.revalidate();
+//        songsPanel.revalidate();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
         getSongByButton = new HashMap<JButton, Song>();
         songsToShow = songsToUpdate;
@@ -65,14 +69,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             songAsButton.setText(song.getTitle());
             songAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             songAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-            songAsButton.addActionListener(this);
+            songAsButton.addActionListener(actionListener);
             getSongByButton.put(songAsButton , song);
-            songsPanel.add(songAsButton , gbc);
-            gbc.gridx ++ ;
-            if(gbc.gridx == 3){
-                gbc.gridx = 0 ;
-                gbc.gridy ++ ;
-            }
+            addComponentToSongsPanel(songAsButton);
         }
         add(songsPanel , BorderLayout.CENTER);
         songsPanel.repaint();
@@ -91,11 +90,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             artistAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             artistAsButton.setText(artist.getName());
             getArtistByButton.put(artistAsButton , artist);
-            songsPanel.add(artistAsButton , gbc);
-            if(++gbc.gridx > 2){
-                gbc.gridx = 0 ;
-                gbc.gridy ++ ;
-            }
+            addComponentToSongsPanel(artistAsButton);
         }
         add(songsPanel , BorderLayout.CENTER);
         songsPanel.repaint();
@@ -114,12 +109,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             albumAsButton.setHorizontalTextPosition(SwingConstants.CENTER);
             albumAsButton.addActionListener(this);
             getAlbumByButton.put(albumAsButton , album);
-            songsPanel.add(albumAsButton , gbc);
-            gbc.gridx ++ ;
-            if(gbc.gridx >= 3){
-                gbc.gridx = 0 ;
-                gbc.gridy ++ ;
-            }
+            addComponentToSongsPanel(albumAsButton);
         }
         add(songsPanel , BorderLayout.CENTER);
         songsPanel.repaint();
@@ -146,15 +136,19 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             playlistAsButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             getPlaylistByButton.put(playlistAsButton , playlist);
             songsPanel.add(playlistAsButton , gbc);
-            gbc.gridx = gbc.gridx + 1 ;
-            if(gbc.gridx == 3){
-                gbc.gridx = 0 ;
-                ++gbc.gridy ;
-            }
+            addComponentToSongsPanel(playlistAsButton);
         }
         add(songsPanel , BorderLayout.CENTER);
         songsPanel.repaint();
         songsPanel.revalidate();
+    }
+
+    private void addComponentToSongsPanel(JButton button){
+        songsPanel.add(button , gbc);
+        if(++gbc.gridx == 3){
+            gbc.gridx = 0 ;
+            gbc.gridy ++ ;
+        }
     }
 
     public void createNorthPanel(String type){
@@ -188,6 +182,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
             editSongs = new JButton("Edit Songs");
             editSongs.addActionListener(this);
+
+            addNewSongLabel = new JLabel("Select songs you want to add to this playlist :");
+            removeSongLabel = new JLabel("Select songs you want to remove from this playlist :");
+            songsFound = new JLabel();
         }
         try {
             northOptionPanel.removeAll();
@@ -209,16 +207,32 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             northOptionPanel.add(removeSong);
             northOptionPanel.add(editSongs);
         }
+        else if(type.equals("AddNewSong")){
+            northOptionPanel.add(addNewSongLabel);
+        }
+        else if(type.equals("RemoveSong")){
+            northOptionPanel.add(removeSongLabel);
+        }
+        else if(type.contains("Results")){
+            songsFound.setText(type);
+            northOptionPanel.add(songsFound);
+        }
+        northOptionPanel.revalidate();
         add(northOptionPanel, BorderLayout.NORTH);
         revalidate();
         optionPanelType = type ;
+    }
+
+    public void removeNorthPanel(){
+        remove(northOptionPanel);
+        optionPanelType = "" ;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton buttonPressed = (JButton) e.getSource();
         if(buttonPressed.equals(songs)){
-            updatePanelbySong(Library.allSongs);
+            updatePanelBySong(Library.allSongs , this);
         }
         else if(buttonPressed.equals(albums))
             updatePanelByAlbum();
@@ -262,22 +276,60 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
 
         else if(buttonPressed.equals(addNewSong)){
+            createNorthPanel("AddNewSong");
+            ArrayList<Song> songsNotInPlaylist = new ArrayList<Song>();
+            for(Song song : Library.allSongs){
+                if(!currentSelectedPlaylist.getSongs().contains(song))
+                    songsNotInPlaylist.add(song);
+            }
+            songsToShow = songsNotInPlaylist ;
+            updatePanelBySong(songsNotInPlaylist , new AddListener());
+        }
 
+        else if(buttonPressed.equals(removeSong)){
+            createNorthPanel("RemoveSong");
+            updatePanelBySong(currentSelectedPlaylist.getSongs() , new RemoveListener());
         }
 
         else if(getSongByButton.keySet().contains(buttonPressed)) {
             playerPanel.updatePanel(getSongByButton.get(buttonPressed));
-            updatePanelbySong(Library.allSongs);
+            createNorthPanel("Library");
+            updatePanelBySong(Library.allSongs , this);
         }
 
         else if(getAlbumByButton.keySet().contains(buttonPressed)){
-            updatePanelbySong(getAlbumByButton.get(buttonPressed).getSongs());
+            updatePanelBySong(getAlbumByButton.get(buttonPressed).getSongs() , this);
         }
         else if(getArtistByButton.keySet().contains(buttonPressed))
-            updatePanelbySong(getArtistByButton.get(buttonPressed).getSongs());
+            updatePanelBySong(getArtistByButton.get(buttonPressed).getSongs() , this);
         else if(getPlaylistByButton.keySet().contains(buttonPressed)) {
             createNorthPanel("Playlist");
-            updatePanelbySong(getPlaylistByButton.get(buttonPressed).getSongs());
+            currentSelectedPlaylist = getPlaylistByButton.get(buttonPressed);
+            updatePanelBySong(currentSelectedPlaylist.getSongs() , this);
+        }
+    }
+    private class AddListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton buttonPressed = (JButton) e.getSource();
+            Song selectedSong = getSongByButton.get(buttonPressed);
+            currentSelectedPlaylist.addSong(selectedSong);
+            songsToShow.remove(selectedSong);
+            updatePanelBySong(songsToShow , this);
+//            buttonPressed.setVisible(false);
+//            System.out.println(this.getClass().getName());
+        }
+    }
+
+    private class RemoveListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton buttonPressed = (JButton) e.getSource();
+            Song selectedSong = getSongByButton.get(buttonPressed);
+            currentSelectedPlaylist.removeSong(selectedSong);
+            updatePanelBySong(currentSelectedPlaylist.getSongs() , this);
         }
     }
 }

@@ -145,13 +145,13 @@ public class LeftToolbar extends JPanel implements ActionListener {
 //                ShowSongsPanel.songsToShow = Library.allSongs ;
                 MainPanel.updateSongsPanel();
                 showSongsPanel.createNorthPanel("Library");
-                showSongsPanel.updatePanelbySong(Library.allSongs);
+                showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
             }
         }
         if(e.getSource().equals(libraryButton)) {
             MainPanel.updateSongsPanel();
             showSongsPanel.createNorthPanel("Library");
-            showSongsPanel.updatePanelbySong(Library.allSongs);
+            showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
         }
         if(e.getSource().equals(playListsButton)){
             MainPanel.updateSongsPanel();
@@ -162,15 +162,14 @@ public class LeftToolbar extends JPanel implements ActionListener {
         }
         if(e.getSource().equals(searchButton)){
             String name = searchTextField.getText();
-            System.out.println(name);
             ArrayList<Song> foundSongs = new ArrayList<Song>();
             for(Song song : Library.allSongs){
                 if(song.getTitle().contains(name) || song.getAlbum().contains(name) || song.getArtist().contains(name)) {
                     foundSongs.add(song);
-                    System.out.println(song.getTitle());
                 }
             }
-            showSongsPanel.updatePanelbySong(foundSongs);
+            showSongsPanel.createNorthPanel("Results for \"" + name + "\" :");
+            showSongsPanel.updatePanelBySong(foundSongs , showSongsPanel);
             searchTextField.setText("Search Music");
         }
     }
