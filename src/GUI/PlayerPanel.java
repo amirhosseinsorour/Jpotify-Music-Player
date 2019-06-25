@@ -220,7 +220,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         shuffle = new JButton();
         shuffle.addActionListener(this);
         shuffle.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Shuffle.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        shuffle.setBackground(new Color(0x4B829C));
+        shuffle.setBackground(new Color(0xADA5B0));
 
         previous = new JButton();
         previous.addActionListener(this);
