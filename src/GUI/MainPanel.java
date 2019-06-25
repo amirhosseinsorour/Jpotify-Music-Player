@@ -15,15 +15,17 @@ public class MainPanel extends JFrame {
     public MainPanel() throws Exception{
         super("JPotify Music Player");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon("src\\Icons\\JPotifyApp.png").getImage());
         setSize(1600,900);
         setLocation(50,50);
         setLayout(new BorderLayout());
-//        getContentPane().setBackground(new Color(0xA5BFD3));
-
-        playerPanel = new PlayerPanel();
-        add(playerPanel , BorderLayout.SOUTH);
 
         showSongsPanel = new ShowSongsPanel();
+        playerPanel = new PlayerPanel();
+
+        playerPanel.setShowSongsPanel(showSongsPanel);
+        add(playerPanel , BorderLayout.SOUTH);
+
         showSongsPanel.setPlayerPanel(playerPanel);
         scrollPane = new JScrollPane(showSongsPanel);
         add(scrollPane , BorderLayout.CENTER);
@@ -33,9 +35,6 @@ public class MainPanel extends JFrame {
         leftToolbar = new LeftToolbar();
         leftToolbar.setShowSongsPanel(showSongsPanel);
         leftPanel.add(leftToolbar , BorderLayout.NORTH);
-//        JScrollPane toolbarScrollPane = new JScrollPane(leftPanel);
-//        toolbarScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-//        toolbarScrollPane.setBackground(new Color(0xD3B599C7));
 
         JPanel justForColor = new JPanel();
         justForColor.setBackground(new Color(0xD6000821,true));

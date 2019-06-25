@@ -15,9 +15,11 @@ public abstract class SongInfo {
         return name;
     }
 
-    public void addSong(Song song){
-        if(!songs.contains(song))
-            songs.add(song);
+    public boolean addSong(Song song){
+        if(songs.contains(song))
+            return false ;
+        songs.add(song);
+        return true;
     }
 
     public ArrayList<Song> getSongs() {

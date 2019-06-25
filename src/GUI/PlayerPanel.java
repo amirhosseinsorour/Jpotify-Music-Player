@@ -18,12 +18,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayerPanel extends JPanel implements ActionListener , ChangeListener {
 
-    private static Song song ;
+    private static Song nowPlayingSong ;
+    public static ArrayList<Song> songQueue ;
     private SongTimer timer ;
     private PausablePlayer player ;
     private boolean isPlaying = false ;
@@ -44,10 +46,11 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
     private JPanel songSliderPanel ;
     private JLabel songTotalLengthLabel ;
     private JLabel songCurrentTimePassed ;
+    private ShowSongsPanel showSongsPanel ;
 
     public PlayerPanel() throws Exception{
         setLayout(new BorderLayout());
-        player = new PausablePlayer(new FileInputStream(song.getAddress()));
+        player = new PausablePlayer(new FileInputStream(nowPlayingSong.getAddress()));
 
         JPanel songInfoPanel = new JPanel();
         songInfoPanel.setBackground(new Color(0xE20B1E35));
@@ -56,7 +59,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.insets = new Insets(10 ,10,10,10);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        songPicLabel = new JLabel(new ImageIcon(song.getImage().getImage().getScaledInstance(230,230,Image.SCALE_DEFAULT)));
+        songPicLabel = new JLabel(new ImageIcon(nowPlayingSong.getImage().getImage().getScaledInstance(230,230,Image.SCALE_DEFAULT)));
         songInfoPanel.add(songPicLabel , gbc);
 
         JPanel songInfoInnerPanel = new JPanel();
@@ -64,7 +67,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         songInfoInnerPanel.setLayout(new GridBagLayout());
 //        songInfoInnerPanel.setBackground(new Color(0x4B829C));
 
-        songTitle = new JLabel(song.getTitle());
+        songTitle = new JLabel(nowPlayingSong.getTitle());
         gbc.insets = new Insets(0 ,10,0,10);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
         songTitle.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
@@ -73,14 +76,14 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 //        songTitlePanel.setBackground(new Color(0x4B829C));
         songInfoInnerPanel.add(songTitle , gbc);
 
-        songArtist = new JLabel(song.getArtist());
+        songArtist = new JLabel(nowPlayingSong.getArtist());
         gbc.insets = new Insets(70 ,10,70,10);
         gbc.gridy = 1 ;
 //        songArtist.setForeground(new Color(0xFF211D));
         songArtist.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
         songInfoInnerPanel.add(songArtist , gbc);
 
-        songAlbum = new JLabel(song.getAlbum());
+        songAlbum = new JLabel(nowPlayingSong.getAlbum());
         gbc.insets = new Insets(0 ,10,0,10);
         gbc.gridy = 2 ;
         songAlbum.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
@@ -122,7 +125,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         songSliderPanel.setBackground(new Color(0xE20B1E35));
         songSliderPanel.setLayout(new BorderLayout());
 
-        songTotalLengthLabel = new JLabel(song.getSongLength());
+        songTotalLengthLabel = new JLabel(nowPlayingSong.getSongLength());
         songTotalLengthLabel.setForeground(new Color(-1));
         songTotalLengthLabel.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
         songSliderPanel.add(songTotalLengthLabel , BorderLayout.EAST);
@@ -185,11 +188,19 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
     }
 
     public static void setSong(Song newSong) {
-        song = newSong ;
+        nowPlayingSong = newSong ;
+    }
+
+    public void setShowSongsPanel(ShowSongsPanel showSongsPanel) {
+        this.showSongsPanel = showSongsPanel;
     }
 
     public void updatePanel(Song newSong){
         try {
+            if(Library.favorites.getSongs().contains(newSong))
+                addToFavorites.setBackground(new Color(0x344C68));
+            else
+                addToFavorites.setBackground(new Color(0x3E769C));
             setSong(newSong);
             isPlaying = false ;
             songCurrentTimePassed.setText("0:00");
@@ -198,76 +209,61 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             }catch (NullPointerException ignored){}
             timer = new SongTimer(songSlider , songCurrentTimePassed);
             timer.setTask();
-            timer.setMaxTime((int)song.getLengthInSeconds());
+            timer.setMaxTime((int)nowPlayingSong.getLengthInSeconds());
             timer.setSongStatus(isPlaying);
 
-            songPicLabel.setIcon(new ImageIcon(song.getImage().getImage().getScaledInstance(230, 230, Image.SCALE_DEFAULT)));
-            songTitle.setText(song.getTitle());
-            songArtist.setText(song.getArtist());
-            songAlbum.setText(song.getAlbum());
+            songPicLabel.setIcon(new ImageIcon(nowPlayingSong.getImage().getImage().getScaledInstance(230, 230, Image.SCALE_DEFAULT)));
+            songTitle.setText(nowPlayingSong.getTitle());
+            songArtist.setText(nowPlayingSong.getArtist());
+            songAlbum.setText(nowPlayingSong.getAlbum());
             player.close();
-            player = new PausablePlayer(new FileInputStream(song.getAddress()));
+            player = new PausablePlayer(new FileInputStream(nowPlayingSong.getAddress()));
 
-            Library.allSongs.remove(song);
-            Library.allSongs.add(song);
+            Library.allSongs.remove(nowPlayingSong);
+            Library.allSongs.add(nowPlayingSong);
 
-            Album album = Library.findAlbum(song.getAlbum());
+            Album album = Library.findAlbum(nowPlayingSong.getAlbum());
             Library.albums.remove(album);
             Library.albums.add(album);
 
-            Artist artist = Library.findArtist(song.getArtist());
+            Artist artist = Library.findArtist(nowPlayingSong.getArtist());
             Library.artists.remove(artist);
             Library.artists.add(artist);
 
-            songSlider.setMaximum((int) song.getLengthInSeconds());
+            songSlider.setMaximum((int) nowPlayingSong.getLengthInSeconds());
             songSlider.setValue(0);
-            songTotalLengthLabel.setText(song.getSongLength());
+            songTotalLengthLabel.setText(nowPlayingSong.getSongLength());
         }catch (JavaLayerException | NullPointerException | IOException e){e.printStackTrace();}
     }
 
+    private void initializeButton(JButton newButton , String imagePath){
+        newButton.addActionListener(this);
+        newButton.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
+        newButton.setBackground(new Color(0x0C6C9B));
+    }
+
     private void initializeButtons(){
+
         shuffle = new JButton();
-        shuffle.addActionListener(this);
-        shuffle.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Shuffle.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        shuffle.setBackground(new Color(0x0C6C9B));
-
         previous = new JButton();
-        previous.addActionListener(this);
-        previous.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Previous.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        previous.setBackground(new Color(0x0C6C9B));
-
         playPause = new JButton();
-        playPause.addActionListener(this);
-        playPause.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\PlayPause.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        playPause.setBackground(new Color(0x0C6C9B));
-
-
         next = new JButton();
-        next.addActionListener(this);
-        next.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Next.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        next.setBackground(new Color(0x0C6C9B));
-
         repeat = new JButton();
-        repeat.addActionListener(this);
-        repeat.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Repeat.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        repeat.setBackground(new Color(0x0C6C9B));
-
         mute = new JButton();
-        mute.addActionListener(this);
-        mute.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Mute.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        mute.setBackground(new Color(0x3E769C));
-        mute.setText("Mute");
-
         addToPlaylist = new JButton();
-        addToPlaylist.addActionListener(this);
-        addToPlaylist.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\AddToPlaylist.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        addToPlaylist.setBackground(new Color(0x3E769C));
-        addToPlaylist.setText("Add To Playlist");
-
         addToFavorites = new JButton();
-        addToFavorites.addActionListener(this);
-        addToFavorites.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\AddToFavorites.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        addToFavorites.setBackground(new Color(0x3E769C));
+
+        initializeButton(shuffle , "src\\Icons\\Shuffle.png");
+        initializeButton(previous , "src\\Icons\\Previous.png");
+        initializeButton(playPause , "src\\Icons\\PlayPause.png");
+        initializeButton(next , "src\\Icons\\Next.png");
+        initializeButton(repeat , "src\\Icons\\Repeat.png");
+        initializeButton(mute , "src\\Icons\\Mute.png");
+        initializeButton(addToPlaylist , "src\\Icons\\AddToPlaylist.png");
+        initializeButton(addToFavorites , "src\\Icons\\AddToFavorites.png");
+
+        mute.setText("Mute");
+        addToPlaylist.setText("Add To Playlist");
         addToFavorites.setText("Add To Favorites");
     }
 
@@ -277,7 +273,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             if(timer == null) {
                 timer = new SongTimer(songSlider , songCurrentTimePassed);
                 timer.setTask();
-                timer.setMaxTime((int)song.getLengthInSeconds());
+                timer.setMaxTime((int)nowPlayingSong.getLengthInSeconds());
                 timer.setSongStatus(isPlaying);
             }
             try {
@@ -298,11 +294,34 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 //            player.pause();
 //        if(e.getSource().equals(repeat))
 //            player.resume();
-
+        if(e.getSource().equals(addToPlaylist)){
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("AddToPlaylist");
+            showSongsPanel.updatePanelByPlaylist(new AddToPlaylistListener());
+        }
+        if(e.getSource().equals(addToFavorites)){
+            if(Library.favorites.addSong(nowPlayingSong))
+                addToFavorites.setBackground(new Color(0x344C68));
+            else{
+                Library.favorites.removeSong(nowPlayingSong);
+                addToFavorites.setBackground(new Color(0x3E769C));
+            }
+            if(showSongsPanel.getOptionPanelType().equals("Favorites"))
+                showSongsPanel.updatePanelBySong(Library.favorites.getSongs() , showSongsPanel);
+        }
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
+    }
 
+    private class AddToPlaylistListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton buttonPressed = (JButton) e.getSource();
+            ShowSongsPanel.getPlaylistByButton.get(buttonPressed).addSong(nowPlayingSong);
+            showSongsPanel.createNorthPanel("Library");
+            showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
+        }
     }
 }

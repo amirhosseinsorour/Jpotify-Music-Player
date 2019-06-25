@@ -11,12 +11,14 @@ public class Library {
     public static ArrayList<Album> albums ;
     public static ArrayList<Artist> artists ;
     public static ArrayList<Playlist> playlists ;
+    public static Favorites favorites ;
 
     public Library() {
         allSongs = new ArrayList<Song>();
         albums = new ArrayList<Album>();
         artists = new ArrayList<Artist>();
         playlists = new ArrayList<Playlist>();
+        favorites = new Favorites();
     }
 
     public static void addSong(Song song){

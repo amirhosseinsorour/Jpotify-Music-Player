@@ -1,6 +1,6 @@
 package Logic;
 
-public class Playlist extends SongInfo{
+public class Playlist extends SongInfo implements Removable {
 
     public Playlist(String name) {
         super(name);
@@ -9,5 +9,4 @@ public class Playlist extends SongInfo{
     public void removeSong(Song song){
         songs.remove(song);
     }
-
 }

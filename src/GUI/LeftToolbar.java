@@ -112,8 +112,6 @@ public class LeftToolbar extends JPanel implements ActionListener {
 
         jpotifyLogo.setBackground(new Color(0x3E769C));
         add(jpotifyLogo , gbc);
-
-
     }
 
     public void setShowSongsPanel(ShowSongsPanel showSongsPanel) {
@@ -157,8 +155,14 @@ public class LeftToolbar extends JPanel implements ActionListener {
             MainPanel.updateSongsPanel();
             showSongsPanel.createNorthPanel("Playlists");
             try {
-                showSongsPanel.updatePanelByPlaylist();
+                showSongsPanel.updatePanelByPlaylist(showSongsPanel);
             }catch (NullPointerException ignored){}
+        }
+        if(e.getSource().equals(favoritesButton)){
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("Favorites");
+            showSongsPanel.setCurrentSelectedPlaylist(Library.favorites);
+            showSongsPanel.updatePanelBySong(Library.favorites.getSongs() , showSongsPanel);
         }
         if(e.getSource().equals(searchButton)){
             String name = searchTextField.getText();
