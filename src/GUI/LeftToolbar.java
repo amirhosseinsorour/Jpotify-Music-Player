@@ -31,14 +31,14 @@ public class LeftToolbar extends JPanel implements ActionListener {
         gbc.insets = new Insets(5,5,30,5);
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.ipadx  = 150 ;
-        setBackground(new Color(0xD3B599C7, true));
+        setBackground(new Color(0xD6000821, true));
 
         searchField = new JPanel();
         searchField.setLayout(new BorderLayout());
         ImageIcon searchIcon = new ImageIcon(new ImageIcon("src\\Icons\\Search.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT));
         searchButton = new JButton(searchIcon);
         searchButton.addActionListener(this);
-        searchButton.setBackground(new Color(0x9C3056));
+        searchButton.setBackground(new Color(0x3E769C));
 //        JLabel searchLabel = new JLabel(searchIcon);
 //        searchLabel.setBackground(new Color(0x4B829C));
         searchField.add(searchButton , BorderLayout.EAST);
@@ -70,7 +70,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         libraryButton.setText("Library");
         libraryButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\MyLibrary.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 1;
-        libraryButton.setBackground(new Color(0xBB366F));
+        libraryButton.setBackground(new Color(0x3E769C));
         add(libraryButton , gbc) ;
 
         playListsButton = new JButton();
@@ -78,7 +78,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         playListsButton.setText("PlayLists");
         playListsButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\PlayLists.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 2 ;
-        playListsButton.setBackground(new Color(0xBB366F));
+        playListsButton.setBackground(new Color(0x3E769C));
         add(playListsButton , gbc);
 
         sharedPlaylistButton = new JButton();
@@ -86,7 +86,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         sharedPlaylistButton.setText("Shared Playlist");
         sharedPlaylistButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\SharedPlaylist.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 3 ;
-        sharedPlaylistButton.setBackground(new Color(0xBB366F));
+        sharedPlaylistButton.setBackground(new Color(0x3E769C));
         add(sharedPlaylistButton , gbc);
 
         favoritesButton = new JButton();
@@ -94,7 +94,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         favoritesButton.setText("Favorites");
         favoritesButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Favorites.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 4 ;
-        favoritesButton.setBackground(new Color(0xBB366F));
+        favoritesButton.setBackground(new Color(0x3E769C));
         add(favoritesButton , gbc);
 
         addToLibraryButton = new JButton();
@@ -102,7 +102,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         addToLibraryButton.setText("Add to Library");
         addToLibraryButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Add.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         gbc.gridy = 5 ;
-        addToLibraryButton.setBackground(new Color(0xBB366F));
+        addToLibraryButton.setBackground(new Color(0x3E769C));
         add(addToLibraryButton , gbc);
 
         JButton jpotifyLogo = new JButton();
@@ -110,7 +110,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         jpotifyLogo.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\JPotify.png").getImage().getScaledInstance(200,60,Image.SCALE_AREA_AVERAGING)));
         gbc.gridy = 6 ;
 
-        jpotifyLogo.setBackground(new Color(0xBB366F));
+        jpotifyLogo.setBackground(new Color(0x3E769C));
         add(jpotifyLogo , gbc);
 
 

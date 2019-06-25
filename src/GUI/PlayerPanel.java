@@ -50,6 +50,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         player = new PausablePlayer(new FileInputStream(song.getAddress()));
 
         JPanel songInfoPanel = new JPanel();
+        songInfoPanel.setBackground(new Color(0xE20B1E35));
         songInfoPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL ;
@@ -59,6 +60,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         songInfoPanel.add(songPicLabel , gbc);
 
         JPanel songInfoInnerPanel = new JPanel();
+        songInfoInnerPanel.setBackground(new Color(0x3E769C));
         songInfoInnerPanel.setLayout(new GridBagLayout());
 //        songInfoInnerPanel.setBackground(new Color(0x4B829C));
 
@@ -94,6 +96,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         playerArea.setLayout(new GridBagLayout());
 
         JPanel buttons = new JPanel();
+        buttons.setBackground(new Color(0xE20B1E35));
         buttons.setLayout(new GridBagLayout());
         gbc.insets = new Insets(5,5,5,5);
         initializeButtons();
@@ -116,33 +119,37 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         playerArea.add(buttons , gbc);
 
         songSliderPanel = new JPanel();
+        songSliderPanel.setBackground(new Color(0xE20B1E35));
         songSliderPanel.setLayout(new BorderLayout());
 
         songTotalLengthLabel = new JLabel(song.getSongLength());
+        songTotalLengthLabel.setForeground(new Color(-1));
         songTotalLengthLabel.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
         songSliderPanel.add(songTotalLengthLabel , BorderLayout.EAST);
 
         songCurrentTimePassed = new JLabel("0:00");
+        songCurrentTimePassed.setForeground(new Color(-1));
         songCurrentTimePassed.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
         songSliderPanel.add(songCurrentTimePassed , BorderLayout.WEST);
 
         songSlider = new JSlider();
+        songSlider.setBackground(new Color(0xE20B1E35));
         songSlider.setMinimum(0);
         songSlider.setValue(0);
         songSliderPanel.add(songSlider , BorderLayout.CENTER);
         gbc.gridy = 1 ;
         playerArea.add(songSliderPanel , gbc);
 
-        playerArea.setBackground(new Color(0xD3B599C7));
+        playerArea.setBackground(new Color(0x3E769C));
 
         add(playerArea , BorderLayout.CENTER);
 
         JPanel optionPanel = new JPanel();
         optionPanel.setLayout(new GridBagLayout());
-        optionPanel.setBackground(new Color(0xB76083));
-        optionPanel.setForeground(new Color(0xFF151F));
+        optionPanel.setBackground(new Color(0xE20B1E35));
 
         JPanel volumePanel = new JPanel();
+        volumePanel.setBackground(new Color(0x3E769C));
         volumePanel.setLayout(new BorderLayout());
 
         JLabel volumeIcon = new JLabel();
@@ -150,6 +157,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         volumePanel.add(volumeIcon , BorderLayout.WEST);
 
         volume = new JSlider(0,100,50);
+        volume.setBackground(new Color(0x3E769C));
         volume.setMinorTickSpacing(10);
         volume.setPaintTicks(true);
         volume.addChangeListener(this);
@@ -161,6 +169,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         optionPanel.add(volumePanel , gbc);
 
         JPanel rightButtonsPanel = new JPanel();
+        rightButtonsPanel.setBackground(new Color(0xE20B1E35));
         rightButtonsPanel.setLayout(new GridBagLayout());
         rightButtonsPanel.add(mute , gbc);
 //        gbc.gridwidth = 1 ;
@@ -220,45 +229,45 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         shuffle = new JButton();
         shuffle.addActionListener(this);
         shuffle.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Shuffle.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        shuffle.setBackground(new Color(0xADA5B0));
+        shuffle.setBackground(new Color(0x0C6C9B));
 
         previous = new JButton();
         previous.addActionListener(this);
         previous.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Previous.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        previous.setBackground(new Color(0x4B828C));
+        previous.setBackground(new Color(0x0C6C9B));
 
         playPause = new JButton();
         playPause.addActionListener(this);
         playPause.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\PlayPause.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        playPause.setBackground(new Color(0x0C5F8C));
+        playPause.setBackground(new Color(0x0C6C9B));
 
 
         next = new JButton();
         next.addActionListener(this);
         next.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Next.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        next.setBackground(new Color(0x4B828C));
+        next.setBackground(new Color(0x0C6C9B));
 
         repeat = new JButton();
         repeat.addActionListener(this);
         repeat.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Repeat.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        repeat.setBackground(new Color(0x4B829C));
+        repeat.setBackground(new Color(0x0C6C9B));
 
         mute = new JButton();
         mute.addActionListener(this);
         mute.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Mute.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        mute.setBackground(new Color(0x8F7DA1));
+        mute.setBackground(new Color(0x3E769C));
         mute.setText("Mute");
 
         addToPlaylist = new JButton();
         addToPlaylist.addActionListener(this);
         addToPlaylist.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\AddToPlaylist.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        addToPlaylist.setBackground(new Color(0x8F7DA1));
+        addToPlaylist.setBackground(new Color(0x3E769C));
         addToPlaylist.setText("Add To Playlist");
 
         addToFavorites = new JButton();
         addToFavorites.addActionListener(this);
         addToFavorites.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\AddToFavorites.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        addToFavorites.setBackground(new Color(0x8F7DA1));
+        addToFavorites.setBackground(new Color(0x3E769C));
         addToFavorites.setText("Add To Favorites");
     }
 

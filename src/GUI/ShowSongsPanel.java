@@ -41,12 +41,12 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         getAlbumByButton = new HashMap<JButton, Album>();
         getArtistByButton = new HashMap<JButton , Artist>();
         setLayout(new BorderLayout());
-        setBackground(new Color(0x7EB4D3));
+//        setBackground(new Color(0xA5BFD3));
         optionPanelType = "null" ;
 
         songsPanel = new JPanel();
         songsPanel.setLayout(new GridBagLayout());
-        songsPanel.setBackground(new Color(0x7EB4D3));
+        songsPanel.setBackground(new Color(0xA4B8D3));
         add(songsPanel , BorderLayout.CENTER);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL ;
@@ -156,36 +156,49 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             return;
         if(northOptionPanel == null){
             northOptionPanel = new JPanel();
-            northOptionPanel.setBackground(new Color(0x4C6A7D));
+            northOptionPanel.setBackground(new Color(0xE20B1E35, true));
             northOptionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
             songs = new JButton("Songs");
+            songs.setBackground(new Color(0x3E769C));
             songs.addActionListener(this);
 
             albums = new JButton("Albums");
+            albums.setBackground(new Color(0x3E769C));
             albums.addActionListener(this);
 
             artists = new JButton("Artists");
+            artists.setBackground(new Color(0x3E769C));
             artists.addActionListener(this);
 
             addNewPlaylist = new JButton("Add new Playlist");
+            addNewPlaylist.setBackground(new Color(0x3E769C));
             addNewPlaylist.addActionListener(this);
 
             removePlaylist = new JButton("Remove Playlist");
+            removePlaylist.setBackground(new Color(0x3E769C));
             removePlaylist.addActionListener(this);
 
             addNewSong = new JButton("Add Song");
+            addNewSong.setBackground(new Color(0x3E769C));
             addNewSong.addActionListener(this);
 
             removeSong = new JButton("Remove Song");
+            removeSong.setBackground(new Color(0x3E769C));
             removeSong.addActionListener(this);
 
             editSongs = new JButton("Edit Songs");
+            editSongs.setBackground(new Color(0x3E769C));
             editSongs.addActionListener(this);
 
             addNewSongLabel = new JLabel("Select songs you want to add to this playlist :");
+            addNewSongLabel.setForeground(new Color(-1));
+
             removeSongLabel = new JLabel("Select songs you want to remove from this playlist :");
+            removeSongLabel.setForeground(new Color(-1));
+
             songsFound = new JLabel();
+            songsFound.setForeground(new Color(-1));
         }
         try {
             northOptionPanel.removeAll();
@@ -223,10 +236,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         optionPanelType = type ;
     }
 
-    public void removeNorthPanel(){
-        remove(northOptionPanel);
-        optionPanelType = "" ;
-    }
+//    public void removeNorthPanel(){
+//        remove(northOptionPanel);
+//        optionPanelType = "" ;
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
