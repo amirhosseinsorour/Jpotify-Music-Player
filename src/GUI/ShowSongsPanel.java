@@ -55,6 +55,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
     public void updatePanelbySong(ArrayList<Song> songsToUpdate){
         songsPanel.removeAll();
+        songsPanel.repaint();
         songsPanel.revalidate();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
         getSongByButton = new HashMap<JButton, Song>();
