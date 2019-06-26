@@ -3,6 +3,7 @@ package Logic;
 import GUI.MainPanel;
 import GUI.PlayerPanel;
 import GUI.ShowSongsPanel;
+import NetWork.Client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,7 @@ public class Test extends JSlider {
         Thread.sleep(3000);
         mainPanel.playerPanel.updatePanel(new Song("Sirvan Khosravi Tajob Nakon.mp3"));
         Library library = new Library();
+        new Client();
 
     }
 }
