@@ -1,4 +1,4 @@
-package NetWork;
+package Network;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
