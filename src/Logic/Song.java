@@ -5,9 +5,8 @@ import com.mpatric.mp3agic.Mp3File;
 import javazoom.jl.player.Player;
 
 import javax.swing.*;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
+
 
 public class Song extends Mp3File{
 
