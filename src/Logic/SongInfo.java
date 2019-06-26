@@ -3,10 +3,10 @@ package Logic;
 import java.util.ArrayList;
 
 public abstract class SongInfo {
-    protected ArrayList<Song> songs ;
+    ArrayList<Song> songs ;
     private String name;
 
-    public SongInfo(String name) {
+    SongInfo(String name) {
         songs = new ArrayList<>();
         this.name = name ;
     }

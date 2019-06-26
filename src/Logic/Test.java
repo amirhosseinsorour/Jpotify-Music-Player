@@ -5,19 +5,8 @@ import GUI.PlayerPanel;
 import GUI.ShowSongsPanel;
 import NetWork.Client;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Timer;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.TimerTask;
 
 public class Test extends JSlider {
 

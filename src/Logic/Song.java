@@ -7,7 +7,6 @@ import javazoom.jl.player.Player;
 import javax.swing.*;
 import java.io.FileInputStream;
 
-
 public class Song extends Mp3File{
 
     private String songAddress ;
@@ -109,10 +108,4 @@ public class Song extends Mp3File{
         else return false ;
     }
 
-   /* @Override
-    public void run() {
-        try {
-            this.play();
-        }catch (Exception ignored){}
-    }*/
 }

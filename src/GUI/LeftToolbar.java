@@ -4,8 +4,6 @@ import Logic.Library;
 import Logic.Song;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -106,7 +104,6 @@ public class LeftToolbar extends JPanel implements ActionListener {
         add(addToLibraryButton , gbc);
 
         JButton jpotifyLogo = new JButton();
-//        jpotifyLogo.setEnabled(false);
         jpotifyLogo.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\JPotify.png").getImage().getScaledInstance(200,60,Image.SCALE_AREA_AVERAGING)));
         gbc.gridy = 6 ;
 

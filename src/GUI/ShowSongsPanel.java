@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 
 public class ShowSongsPanel extends JPanel implements ActionListener {
@@ -32,18 +31,17 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     private PlayerPanel playerPanel ;
     private Playlist currentSelectedPlaylist ;
     public static ArrayList<Song> songsToShow ;
-    public static HashMap<JButton , Song> getSongByButton ;
-    public static HashMap<JButton , Album> getAlbumByButton ;
-    public static HashMap<JButton , Artist> getArtistByButton ;
-    public static HashMap<JButton , Playlist> getPlaylistByButton ;
+    private static HashMap<JButton , Song> getSongByButton ;
+    private static HashMap<JButton , Album> getAlbumByButton ;
+    private static HashMap<JButton , Artist> getArtistByButton ;
+    static HashMap<JButton , Playlist> getPlaylistByButton ;
     private static GridBagConstraints gbc ;
 
-    public ShowSongsPanel() {
-        getSongByButton = new HashMap<JButton, Song>();
-        getAlbumByButton = new HashMap<JButton, Album>();
-        getArtistByButton = new HashMap<JButton , Artist>();
+    ShowSongsPanel() {
+        getSongByButton = new HashMap<>();
+        getAlbumByButton = new HashMap<>();
+        getArtistByButton = new HashMap<>();
         setLayout(new BorderLayout());
-//        setBackground(new Color(0xA5BFD3));
         optionPanelType = "null" ;
 
         songsPanel = new JPanel();
@@ -55,23 +53,22 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         gbc.insets = new Insets(20 ,20,20,20);
     }
 
-    public void setPlayerPanel(PlayerPanel playerPanel) {
+    void setPlayerPanel(PlayerPanel playerPanel) {
         this.playerPanel = playerPanel;
     }
 
-    public void setCurrentSelectedPlaylist(Playlist currentSelectedPlaylist) {
+    void setCurrentSelectedPlaylist(Playlist currentSelectedPlaylist) {
         this.currentSelectedPlaylist = currentSelectedPlaylist;
     }
 
-    public String getOptionPanelType() {
+    String getOptionPanelType() {
         return optionPanelType;
     }
 
-    public void updatePanelBySong(ArrayList<Song> songsToUpdate , ActionListener actionListener){
+    void updatePanelBySong(ArrayList<Song> songsToUpdate , ActionListener actionListener){
         songsPanel.removeAll();
-//        songsPanel.revalidate();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        getSongByButton = new HashMap<JButton, Song>();
+        getSongByButton = new HashMap<>();
         songsToShow = songsToUpdate;
         for(int i  = songsToShow.size()-1 ; i >=0 ; i--){
             Song song = songsToShow.get(i);
@@ -88,10 +85,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
-    public void updatePanelByArtist(){
+    private void updatePanelByArtist(){
         songsPanel.removeAll();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        getArtistByButton = new HashMap<JButton, Artist>();
+        getArtistByButton = new HashMap<>();
         for(int i = Library.artists.size()-1 ; i >= 0 ; i--){
             Artist artist = Library.artists.get(i);
             JButton artistAsButton = new JButton(new ImageIcon(artist.getSongs().get(0).getImage().getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
@@ -107,10 +104,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
-    public void updatePanelByAlbum(){
+    private void updatePanelByAlbum(){
         songsPanel.removeAll();
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-        getAlbumByButton = new HashMap<JButton, Album>();
+        getAlbumByButton = new HashMap<>();
         for(int i = Library.albums.size()-1 ; i >= 0 ; i--){
             Album album = Library.albums.get(i);
             JButton albumAsButton = new JButton(new ImageIcon(album.getSongs().get(0).getImage().getImage().getScaledInstance(180,180,Image.SCALE_DEFAULT)));
@@ -126,10 +123,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
-    public void updatePanelByPlaylist(ActionListener actionListener){
+    void updatePanelByPlaylist(ActionListener actionListener){
         songsPanel.removeAll();
         gbc.gridx = gbc.gridy = 0 ;
-        getPlaylistByButton = new HashMap<JButton, Playlist>();
+        getPlaylistByButton = new HashMap<>();
         for(Playlist playlist : Library.playlists){
             JButton playlistAsButton ;
             int r = playlist.getSongs().size();
@@ -161,7 +158,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
     }
 
-    public void createNorthPanel(String type){
+    void createNorthPanel(String type){
         if(optionPanelType.equals(type))
             return;
         if(northOptionPanel == null){
@@ -262,11 +259,6 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         optionPanelType = type ;
     }
 
-//    public void removeNorthPanel(){
-//        remove(northOptionPanel);
-//        optionPanelType = "" ;
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton buttonPressed = (JButton) e.getSource();
@@ -279,7 +271,6 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             updatePanelByArtist();
         else if(buttonPressed.equals(addNewPlaylist)){
             String newPlaylistName = JOptionPane.showInputDialog(null ,"Enter Playlist Name" ,"New Playlist",JOptionPane.INFORMATION_MESSAGE );
-//            System.out.println(newPlaylistName);
             if(newPlaylistName == null) return;
             if(newPlaylistName.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Enter Valid Name!", "Create New Playlist", JOptionPane.ERROR_MESSAGE);
@@ -318,7 +309,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
         else if(buttonPressed.equals(addNewSong)){
             createNorthPanel("AddNewSong");
-            ArrayList<Song> songsNotInPlaylist = new ArrayList<Song>();
+            ArrayList<Song> songsNotInPlaylist = new ArrayList<>();
             for(Song song : Library.allSongs){
                 if(!currentSelectedPlaylist.getSongs().contains(song))
                     songsNotInPlaylist.add(song);
@@ -372,8 +363,6 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             currentSelectedPlaylist.addSong(selectedSong);
             songsToShow.remove(selectedSong);
             updatePanelBySong(songsToShow , this);
-//            buttonPressed.setVisible(false);
-//            System.out.println(this.getClass().getName());
         }
     }
 
