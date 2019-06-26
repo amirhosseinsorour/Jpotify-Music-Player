@@ -334,8 +334,21 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
         else if(getSongByButton.keySet().contains(buttonPressed)) {
             playerPanel.updatePanel(getSongByButton.get(buttonPressed));
+
+            Library.allSongs.remove(PlayerPanel.nowPlayingSong);
+            Library.allSongs.add(PlayerPanel.nowPlayingSong);
+
+            Album album = Library.findAlbum(PlayerPanel.nowPlayingSong.getAlbum());
+            Library.albums.remove(album);
+            Library.albums.add(album);
+
+            Artist artist = Library.findArtist(PlayerPanel.nowPlayingSong.getArtist());
+            Library.artists.remove(artist);
+            Library.artists.add(artist);
+
             if(songsToShow.equals(Library.allSongs))
                 updatePanelBySong(Library.allSongs , this);
+            PlayerPanel.songQueue = songsToShow ;
         }
 
         else if(getAlbumByButton.keySet().contains(buttonPressed)){
