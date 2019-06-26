@@ -1,71 +1,30 @@
 package Logic;
 
-import GUI.MainPanel;
-import GUI.PlayerPanel;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.AudioDevice;
-import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+import java.io.*;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-/*
-public class Main {
-    public static void main(String[] args) throws Exception{
-        Logic.Song song = new Logic.Song("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3");
-
-        Thread thread = new Thread(song , "1");
-        thread.start();
-
-        if(new Scanner(System.in).nextLine().equals("pause"))
-            thread.stop();
-        if(new Scanner(System.in).nextLine().equals("play"))
-            thread.join();
-        System.out.println("s");
-
-
-
-//        RandomAccessFile file = new RandomAccessFile("artwork.jpg", "rw");
-//        file.write(song.getImage());
-//        file.close();
-
-
-    }
-}
-*/
 public class PausablePlayer {
 
     private final static int NOTSTARTED = 0;
     private final static int PLAYING = 1;
     private final static int PAUSED = 2;
     private final static int FINISHED = 3;
-
     // the player actually doing all the work
-    private final Player player;
-
+    private AdvancedPlayer player;
     // locking object used to communicate with player thread
     private final Object playerLock = new Object();
-
-    // status variable what player thread is doing/supposed to do
     private int playerStatus = NOTSTARTED;
 
-    public PausablePlayer(final InputStream inputStream) throws JavaLayerException {
-        this.player = new Player(inputStream);
+    public PausablePlayer(Song songToPlay , int secondToPlay) throws JavaLayerException , FileNotFoundException {
+        this.player = new AdvancedPlayer(new FileInputStream(songToPlay.getAddress()));
+        int frameToPlay = (int) (secondToPlay * songToPlay.getFrameCount() / songToPlay.getLengthInSeconds());
+        player.play(frameToPlay , frameToPlay);
     }
-
-    public PausablePlayer(final InputStream inputStream, final AudioDevice audioDevice) throws JavaLayerException {
-        this.player = new Player(inputStream, audioDevice);
-    }
-
     /**
      * Starts playback (resumes if paused)
      */
-    public void play() throws JavaLayerException {
+    public void play()  {
         synchronized (playerLock) {
             switch (playerStatus) {
                 case NOTSTARTED:
@@ -89,38 +48,20 @@ public class PausablePlayer {
         }
     }
 
-    /**
-     * Pauses playback. Returns true if new state is PAUSED.
-     */
-    public boolean pause() {
+    public void pause() {
         synchronized (playerLock) {
             if (playerStatus == PLAYING) {
                 playerStatus = PAUSED;
             }
-            return playerStatus == PAUSED;
         }
     }
 
-    /**
-     * Resumes playback. Returns true if the new state is PLAYING.
-     */
-    public boolean resume() {
+    private void resume() {
         synchronized (playerLock) {
             if (playerStatus == PAUSED) {
                 playerStatus = PLAYING;
                 playerLock.notifyAll();
             }
-            return playerStatus == PLAYING;
-        }
-    }
-
-    /**
-     * Stops playback. If not playing, does nothing
-     */
-    public void stop() {
-        synchronized (playerLock) {
-            playerStatus = FINISHED;
-            playerLock.notifyAll();
         }
     }
 
@@ -148,9 +89,6 @@ public class PausablePlayer {
         close();
     }
 
-    /**
-     * Closes the player, regardless of current state.
-     */
     public void close() {
         synchronized (playerLock) {
             playerStatus = FINISHED;
@@ -160,25 +98,6 @@ public class PausablePlayer {
         } catch (final Exception e) {
             // ignore, we are terminating anyway
         }
-    }
-
-    public static void main(String[] argv) throws Exception{
-        try {
-
-//            FileInputStream input = new FileInputStream("Ebi - Jane Javani.mp3");
-//            AdvancedPlayer player = new AdvancedPlayer(input);
-//            player.play();
-
-
-//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Homayoun-Shajarian-The-Lords-of-the-Secrets-Tasnif-on-Rumi-S.mp3"));
-//            Clip clip =AudioSystem.getClip();
-//            clip.open(audioInputStream);
-//            clip.loop(Clip.LOOP_CONTINUOUSLY);
-//            clip.start();
-
-
-        } catch (Exception e) {e.printStackTrace();}
-
     }
 
 }

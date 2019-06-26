@@ -1,7 +1,5 @@
 package GUI;
 
-import Logic.Song;
-
 import javax.swing.*;
 import java.awt.*;
 

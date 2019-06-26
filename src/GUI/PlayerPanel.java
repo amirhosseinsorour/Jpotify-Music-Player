@@ -6,18 +6,10 @@ import javax.swing.event.ChangeListener;
 
 import Logic.*;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.FileInputStream;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -57,7 +49,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 
     public PlayerPanel() throws Exception{
         setLayout(new BorderLayout());
-        player = new PausablePlayer(new FileInputStream(nowPlayingSong.getAddress()));
+        player = new PausablePlayer(nowPlayingSong , 0);
 
         JPanel songInfoPanel = new JPanel();
         songInfoPanel.setBackground(new Color(0xE20B1E35));
@@ -223,7 +215,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             songArtist.setText(nowPlayingSong.getArtist());
             songAlbum.setText(nowPlayingSong.getAlbum());
             player.close();
-            player = new PausablePlayer(new FileInputStream(nowPlayingSong.getAddress()));
+            player = new PausablePlayer(nowPlayingSong , 0);
 
             songSlider.setMaximum((int) nowPlayingSong.getLengthInSeconds());
             songSlider.setValue(0);
@@ -254,6 +246,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         newButton.addActionListener(this);
         newButton.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
         newButton.setBackground(new Color(0x0C6C9B));
+        newButton.setFocusPainted(false);
     }
 
     private void initializeButtons(){
@@ -395,7 +388,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         }
     }
 
-    private class SongTimer implements ChangeListener {
+    private class SongTimer {
 
         private Timer timer ;
         private TimerTask task ;
@@ -408,7 +401,18 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             timer = new Timer();
             this.slider = slider ;
             this.timePassed = timePassed ;
-            slider.addChangeListener(this);
+            slider.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent event) {
+                    super.mouseReleased(event);
+                    System.out.println(slider.getValue());
+                    try {
+                        player.close();
+                        player = new PausablePlayer(nowPlayingSong , slider.getValue());
+                        player.play();
+                    }catch (JavaLayerException | FileNotFoundException e){e.printStackTrace();}
+                }
+            });
         }
 
         public void setSongStatus(boolean isPlaying){
@@ -446,10 +450,10 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             return minute + ":" + ( (second<10) ? ("0" + second) : (second) ) ;
         }
 
-        @Override
         public void stateChanged(ChangeEvent e) {
             if(e.getSource().equals(slider)){
-
+//                System.out.println(slider.getValue());
+//                player.seek(slider.getValue());
             }
         }
     }

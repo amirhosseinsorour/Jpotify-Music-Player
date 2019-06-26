@@ -1,9 +1,6 @@
 package Logic;
 
-//import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.SortedMap;
 
 public class Library {
 
@@ -14,10 +11,10 @@ public class Library {
     public static Favorites favorites ;
 
     public Library() {
-        allSongs = new ArrayList<Song>();
-        albums = new ArrayList<Album>();
-        artists = new ArrayList<Artist>();
-        playlists = new ArrayList<Playlist>();
+        allSongs = new ArrayList<>();
+        albums = new ArrayList<>();
+        artists = new ArrayList<>();
+        playlists = new ArrayList<>();
         favorites = new Favorites();
     }
 
@@ -46,11 +43,6 @@ public class Library {
             artist.addSong(song);
             artists.add(artist);
         }
-    }
-
-    public void addNewPlaylist(String name){
-        Playlist newPlaylist = new Playlist(name);
-        playlists.add(newPlaylist);
     }
 
     private static Album isNewAlbum(Song song){
