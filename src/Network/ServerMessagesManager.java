@@ -1,5 +1,6 @@
 package NetWork;
 
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,10 +22,10 @@ public class ServerMessagesManager implements Runnable {
                     String from = readerHolder.readLine();
                     String text = readerHolder.readLine();
 
-                    //System.out.println(from + " : [" + text + "]");
-               // } else if (command.equals("RESULT")) {
-                   // String result = readerHolder.readLine();
-                    //System.out.println("ans :" + result);
+                    System.out.println(from + " : [" + text + "]");
+                } else if (command.equals("RESULT")) {
+                    String result = readerHolder.readLine();
+                    System.out.println("ans :" + result);
                 } else if (command.equals("FILE")) {
                     String from = readerHolder.readLine();
                     String fileName = readerHolder.readLine();

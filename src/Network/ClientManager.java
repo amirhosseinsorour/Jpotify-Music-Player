@@ -1,8 +1,6 @@
 package NetWork;
 
 
-import Logic.Library;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,23 +152,7 @@ public class ClientManager implements Runnable {
         }
     }*/
 
-/*public void sharePlaylist() throws IOException {
-    for (int i = 0; i <Server.clientsMap.size() ; i++) {
-        for (int j = 0; j < Library.allSongs.size(); j++) {
 
-            String FileName = reader.readLine();
-            String to = reader.readLine();
-
-            int fileLength = Integer.parseInt(reader.readLine());
-
-            byte[] fileData = new byte[fileLength];
-
-            reader.readFully(fileData);
-            sendFileToAnotherClient(Library.allSongs.get(j).getAddress(),);
-        }
-    }
-
-}*/
 
     private void sendFileToAnotherClient(String fileName, String to, byte[] fileData) {
 

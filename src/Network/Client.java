@@ -1,5 +1,8 @@
 package NetWork;
 
+
+import Logic.Library;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +20,7 @@ import java.util.Scanner;
 public class Client {
     Socket mSocket;
     int port = 9093;
-    String serverAddress = "192.168.43.141";
+    String serverAddress = "localhost";
 
     InputStream fromServerStream;
     OutputStream toServerStream;
@@ -108,10 +111,14 @@ public class Client {
                     System.out.println("Enter receiver name");
                     to = sc.nextLine();
 
-                    System.out.println("Enter file name(Full Path)");
-                    String fileName = sc.nextLine();
+                    //System.out.println("Enter file name(Full Path)");
+                    for (int i = 0; i < Library.allSongs.size(); i++) {
 
-                    sendFile(to, fileName);
+                        //sendFile(to, fileName);
+                        sendFile(to,Library.allSongs.get(i).getAddress());
+                    }
+                    //String fileName = sc.nextLine();
+
                     break;
                 case 7:
 
@@ -177,7 +184,7 @@ public class Client {
         writer.println("BYE");
     }
 
-    public static void main(String[] args) {
-        new Client();
-    }
+   // public static void main(String[] args) {
+        ///new Client();
+   // }
 }
