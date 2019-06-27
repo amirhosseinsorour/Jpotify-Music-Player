@@ -27,6 +27,8 @@ public class Client {
 
     DataInputStream reader;
     PrintWriter writer;
+    Scanner scanner = new Scanner(System.in);
+    String to1="";
 
     public Client() {
         try {
@@ -70,30 +72,31 @@ public class Client {
         sendName(name);
 
         while (true) {
-            System.out.println("-----------");
+            //System.out.println("-----------");
             System.out.println("Enter Command number(ex:3):\n"
                     //  + "1)add two number\n"
                     //+ "2)evaluate an expression\n"
                     //  + "3)echo\n"
                     //  + "4)single cht!\n"
                     // + "5)group cht!\n"
-                    + "6)send file\n"
-                    + "7)exit");
+                    + "1)send file:\n");
+
+
 
             int commandNumber = Integer.parseInt(sc.nextLine());
 
             switch (commandNumber) {
 
 
-                case 3:
+              /*  case 3:
                     System.out.println("Enter message");
                     String msg = sc.nextLine();
 
                     echo(msg);
 
                     break;
-                case 4:
-                    System.out.println("Enter receiver name");
+               case 4:
+                    System.out.println("Enter your fre");
                     String to = sc.nextLine();
 
                     System.out.println("Enter your message");
@@ -106,25 +109,32 @@ public class Client {
                     text = sc.nextLine();
 
                     sendGroupCht(text);
-                    break;
-                case 6:
-                    System.out.println("Enter receiver name");
-                    to = sc.nextLine();
+                    break;*/
+                case 1:
+                    System.out.println("enter number of your friend");
+                   // System.out.println("Enter your friends number:");
+                    int number = scanner.nextInt();
+
+                    for (int i = 0; i <number ; i++) {
+                        System.out.println("enter your friend name:");
+                        to1 = scanner.next();
+                        for (int j = 0; j< Library.allSongs.size(); j++) {
+                            sendFile(to1,Library.allSongs.get(j).getAddress());
+                        }
+
+                    }
+
 
                     //System.out.println("Enter file name(Full Path)");
-                    for (int i = 0; i < Library.allSongs.size(); i++) {
 
-                        //sendFile(to, fileName);
-                        sendFile(to,Library.allSongs.get(i).getAddress());
-                    }
                     //String fileName = sc.nextLine();
 
+                   // break;
+               // case 7:
+
+                  //  bye();
+
                     break;
-                case 7:
-
-                    bye();
-
-                    return;
 
             }
         }

@@ -14,13 +14,13 @@ public class Test extends JSlider {
     }
 
     public static void main(String[] args) throws Exception {
-        Song song = new Song("Sirvan Khosravi Na Naro.mp3");          //temporary
+        Song song = new Song("Sirvan Khosravi Tajob Nakon.mp3");          //temporary
         PlayerPanel.setSong(song);
         ShowSongsPanel.songsToShow = new ArrayList<>();
         MainPanel mainPanel = new MainPanel();
         mainPanel.setVisible(true);
-        Thread.sleep(3000);
-        mainPanel.playerPanel.updatePanel(new Song("Sirvan Khosravi Tajob Nakon.mp3"));
+       // Thread.sleep(3000);
+        //mainPanel.playerPanel.updatePanel(new Song("Sirvan Khosravi Tajob Nakon.mp3"));
         Library library = new Library();
         new Client();
 
