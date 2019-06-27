@@ -18,37 +18,34 @@ public class LeftToolbar extends JPanel implements ActionListener {
     private JButton playListsButton ;
     private JButton favoritesButton ;
     private JButton addToLibraryButton ;
+    private JButton jpotifyLogo ;
     private JTextField searchTextField ;
-    private JPanel searchField ;
     private ShowSongsPanel showSongsPanel ;
+    private GridBagConstraints gbc ;
 
-    public LeftToolbar(){
+    LeftToolbar(){
         setLayout(new GridBagLayout());
         setSize(100,200);
-        GridBagConstraints gbc = new GridBagConstraints();
+        gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,30,5);
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.ipadx  = 150 ;
         setBackground(new Color(0xD6000821, true));
 
-        searchField = new JPanel();
+        JPanel searchField = new JPanel();
         searchField.setLayout(new BorderLayout());
         ImageIcon searchIcon = new ImageIcon(new ImageIcon("src\\Icons\\Search.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT));
         searchButton = new JButton(searchIcon);
         searchButton.addActionListener(this);
         searchButton.setBackground(new Color(0x3E769C));
-//        JLabel searchLabel = new JLabel(searchIcon);
-//        searchLabel.setBackground(new Color(0x4B829C));
+        searchButton.setFocusPainted(false);
         searchField.add(searchButton , BorderLayout.EAST);
         searchTextField = new JTextField("Search Music");
         searchTextField.addFocusListener(new FocusListener() {
-//            private boolean isFocused = true ;
             @Override
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField) e.getComponent();
                 source.setText("");
-//                isFocused = true ;
-//                source.removeActionListener(this);
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -56,7 +53,6 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 if(source.getText().equals("")) {
                     source.setText("Search Music");
                 }
-//                isFocused = false;
             }
         });
         searchField.add(searchTextField , BorderLayout.CENTER);
@@ -64,51 +60,36 @@ public class LeftToolbar extends JPanel implements ActionListener {
         add(searchField , gbc);
 
         libraryButton = new JButton();
-        libraryButton.addActionListener(this);
-        libraryButton.setText("Library");
-        libraryButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\MyLibrary.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 1;
-        libraryButton.setBackground(new Color(0x3E769C));
-        add(libraryButton , gbc) ;
+        initializeButton(libraryButton , "Library" , "src\\Icons\\MyLibrary.png");
 
         playListsButton = new JButton();
-        playListsButton.addActionListener(this);
-        playListsButton.setText("PlayLists");
-        playListsButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\PlayLists.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 2 ;
-        playListsButton.setBackground(new Color(0x3E769C));
-        add(playListsButton , gbc);
+        initializeButton(playListsButton , "PlayLists" , "src\\Icons\\PlayLists.png");
 
         sharedPlaylistButton = new JButton();
-        sharedPlaylistButton.addActionListener(this);
-        sharedPlaylistButton.setText("Shared Playlist");
-        sharedPlaylistButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\SharedPlaylist.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 3 ;
-        sharedPlaylistButton.setBackground(new Color(0x3E769C));
-        add(sharedPlaylistButton , gbc);
+        initializeButton(sharedPlaylistButton , "SharedPlaylist" , "src\\Icons\\SharedPlaylist.png");
 
         favoritesButton = new JButton();
-        favoritesButton.addActionListener(this);
-        favoritesButton.setText("Favorites");
-        favoritesButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Favorites.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 4 ;
-        favoritesButton.setBackground(new Color(0x3E769C));
-        add(favoritesButton , gbc);
+        initializeButton(favoritesButton , "Favorites" , "src\\Icons\\Favorites.png");
 
         addToLibraryButton = new JButton();
-        addToLibraryButton.addActionListener(this);
-        addToLibraryButton.setText("Add to Library");
-        addToLibraryButton.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Add.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT)));
-        gbc.gridy = 5 ;
-        addToLibraryButton.setBackground(new Color(0x3E769C));
-        add(addToLibraryButton , gbc);
+        initializeButton(addToLibraryButton , "Add to Library" , "src\\Icons\\Add.png");
 
-        JButton jpotifyLogo = new JButton();
+        jpotifyLogo = new JButton();
         jpotifyLogo.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\JPotify.png").getImage().getScaledInstance(200,60,Image.SCALE_AREA_AVERAGING)));
-        gbc.gridy = 6 ;
+        gbc.gridy ++ ;
 
         jpotifyLogo.setBackground(new Color(0x3E769C));
         add(jpotifyLogo , gbc);
+    }
+
+    private void initializeButton(JButton button , String buttonText , String imagePath){
+        button.setText(buttonText);
+        button.setIcon(new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(40,40 , Image.SCALE_DEFAULT)));
+        button.setBackground(new Color(0x3E769C));
+        button.setFocusPainted(false);
+        button.addActionListener(this);
+        gbc.gridy++ ;
+        add(button , gbc);
     }
 
     public void setShowSongsPanel(ShowSongsPanel showSongsPanel) {
@@ -122,7 +103,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
             jfc.setDialogTitle("Add new Song");
             jfc.setMultiSelectionEnabled(true);
             jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            jfc.setCurrentDirectory(new File("D:\\Music"));
+            jfc.setCurrentDirectory(new File("D:\\Music")); // should be commented
             jfc.setAcceptAllFileFilterUsed(false);
             jfc.addChoosableFileFilter(new FileNameExtensionFilter("mp3 Files" , "mp3"));
             int returnValue = jfc.showOpenDialog(null);
@@ -132,12 +113,8 @@ public class LeftToolbar extends JPanel implements ActionListener {
                     try {
                         Song newSong = new Song(file.getPath());
                         Library.addSong(newSong);
-//                        System.out.println(newSong.getTitle());
-//                        ShowSongsPanel.songsToShow.add(newSong);
-//                        System.out.println(newSong.getTitle());
                     } catch (Exception ex){ex.printStackTrace();}
                 }
-//                ShowSongsPanel.songsToShow = Library.allSongs ;
                 MainPanel.updateSongsPanel();
                 showSongsPanel.createNorthPanel("Library");
                 showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
