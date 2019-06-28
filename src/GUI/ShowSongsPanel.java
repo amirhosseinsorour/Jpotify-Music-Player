@@ -27,6 +27,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     private JLabel removeSongLabel;
     private JLabel songsFound;
     private JLabel favoritesLabel;
+    private JLabel sharedPlaylistLabel ;
     private JLabel addToPlaylistLabel;
     private JLabel editPlaylistLabel;
     private JLabel changePositionLabel;
@@ -220,6 +221,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             favoritesLabel = new JLabel("Favorites         ");
             favoritesLabel.setForeground(new Color(-1));
 
+            sharedPlaylistLabel = new JLabel("Shared Playlist         ");
+            sharedPlaylistLabel.setForeground(new Color(-1));
+
             addToPlaylistLabel = new JLabel("Select Playlist to Add :");
             addToPlaylistLabel.setForeground(new Color(-1));
 
@@ -272,6 +276,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
                 northOptionPanel.add(removeSong);
                 northOptionPanel.add(editSongs);
                 break;
+            case "SharedPlaylist" :
+                northOptionPanel.add(sharedPlaylistLabel);
+                northOptionPanel.add(addNewSong);
+                northOptionPanel.add(removeSong);
+                break;
             case "AddToPlaylist":
                 northOptionPanel.add(addToPlaylistLabel);
                 break;
@@ -310,6 +319,8 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             Playlist newPlaylist = new Playlist(newPlaylistName);
             Library.playlists.add(newPlaylist);
             updatePanelByPlaylist(this);
+            SaveData.savePlaylists();
+            SaveData.savePlaylist(newPlaylist.getSongs() , "Playlists\\" + newPlaylistName);
         } else if (buttonPressed.equals(removePlaylist)) {
             String name = JOptionPane.showInputDialog(null, "Enter Playlist Name", "Remove Playlist", JOptionPane.INFORMATION_MESSAGE);
             if (name == null)
@@ -322,6 +333,8 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
                 switch (choice) {
                     case JOptionPane.OK_OPTION:
                         Library.playlists.remove(playlist);
+                        SaveData.savePlaylists();
+                        SaveData.deletePlaylist(playlist);
                         break;
                     case JOptionPane.CANCEL_OPTION:
                     case JOptionPane.CLOSED_OPTION:
@@ -331,6 +344,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Playlist Removed!", "Remove Playlist", JOptionPane.PLAIN_MESSAGE);
                 updatePanelByPlaylist(this);
             }
+
         } else if (buttonPressed.equals(addNewSong)) {
             createNorthPanel("AddNewSong");
             ArrayList<Song> songsNotInPlaylist = new ArrayList<>();
@@ -363,6 +377,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             if (songsToShow.equals(Library.allSongs))
                 updatePanelBySong(Library.allSongs, this);
             PlayerPanel.songQueue = songsToShow;
+            SaveData.saveLibrary();
         } else if (getAlbumByButton.keySet().contains(buttonPressed)) {
             updatePanelBySong(getAlbumByButton.get(buttonPressed).getSongs(), this);
         } else if (getArtistByButton.keySet().contains(buttonPressed))
@@ -371,7 +386,6 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             createNorthPanel("Playlist");
             currentSelectedPlaylist = getPlaylistByButton.get(buttonPressed);
             updatePanelBySong(currentSelectedPlaylist.getSongs(), this);
-            System.out.println(currentSelectedPlaylist.getName());
         }
     }
 
@@ -384,6 +398,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             currentSelectedPlaylist.addSong(selectedSong);
             songsToShow.remove(selectedSong);
             updatePanelBySong(songsToShow, this);
+            if(!currentSelectedPlaylist.equals(Library.favorites) && !currentSelectedPlaylist.equals(Library.sharedPlaylist))
+                SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , "Playlists\\" + currentSelectedPlaylist.getName());
+            else
+            SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , currentSelectedPlaylist.getName());
         }
     }
 
@@ -395,6 +413,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             Song selectedSong = getSongByButton.get(buttonPressed);
             currentSelectedPlaylist.removeSong(selectedSong);
             updatePanelBySong(currentSelectedPlaylist.getSongs(), this);
+            if(!currentSelectedPlaylist.equals(Library.favorites) && !currentSelectedPlaylist.equals(Library.sharedPlaylist))
+                SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , "Playlists\\" + currentSelectedPlaylist.getName());
+            else
+                SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , currentSelectedPlaylist.getName());
         }
     }
 
@@ -408,7 +430,6 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             songToChangePosition = getSongByButton.get(buttonPressed);
             currentSelectedPlaylist.removeSong(songToChangePosition);
             updatePanelBySong(currentSelectedPlaylist.getSongs(), new ChangePositionListener());
-
         }
 
         private class ChangePositionListener implements ActionListener {
@@ -426,6 +447,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
                 currentSelectedPlaylist.setSongs(newOrderedPlaylist);
                 createNorthPanel("Playlist");
                 updatePanelBySong(currentSelectedPlaylist.getSongs(), ShowSongsPanel.this::actionPerformed);
+                if(!currentSelectedPlaylist.equals(Library.favorites))
+                    SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , "Playlists\\" + currentSelectedPlaylist.getName());
+                else
+                    SaveData.savePlaylist(currentSelectedPlaylist.getSongs() , currentSelectedPlaylist.getName());
             }
         }
     }

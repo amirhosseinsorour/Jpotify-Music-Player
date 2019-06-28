@@ -1,13 +1,16 @@
 package GUI;
 
+import Logic.Library;
+import Logic.SaveData;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JFrame {
 
-    public LeftToolbar leftToolbar ;
-    public PlayerPanel playerPanel ;
-    public static ShowSongsPanel showSongsPanel ;
+    private LeftToolbar leftToolbar ;
+    private PlayerPanel playerPanel ;
+    private static ShowSongsPanel showSongsPanel ;
     private static JScrollPane scrollPane ;
 
     public MainPanel() throws Exception{
@@ -17,6 +20,8 @@ public class MainPanel extends JFrame {
         setSize(1600,900);
         setLocation(50,50);
         setLayout(new BorderLayout());
+
+        SaveData saveData = new SaveData();
 
         showSongsPanel = new ShowSongsPanel();
         playerPanel = new PlayerPanel();
@@ -40,6 +45,8 @@ public class MainPanel extends JFrame {
 
         add(leftPanel , BorderLayout.WEST);
 
+        showSongsPanel.createNorthPanel("Library");
+        showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
     }
 
     public static void updateSongsPanel(){

@@ -9,6 +9,7 @@ public class Library {
     public static ArrayList<Artist> artists ;
     public static ArrayList<Playlist> playlists ;
     public static Favorites favorites ;
+    public static SharedPlaylist sharedPlaylist ;
 
     public Library() {
         allSongs = new ArrayList<>();
@@ -16,6 +17,7 @@ public class Library {
         artists = new ArrayList<>();
         playlists = new ArrayList<>();
         favorites = new Favorites();
+        sharedPlaylist = new SharedPlaylist();
     }
 
     public static void addSong(Song song){

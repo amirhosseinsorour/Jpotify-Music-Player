@@ -1,6 +1,7 @@
 package GUI;
 
 import Logic.Library;
+import Logic.SaveData;
 import Logic.Song;
 
 import javax.swing.*;
@@ -118,6 +119,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 MainPanel.updateSongsPanel();
                 showSongsPanel.createNorthPanel("Library");
                 showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
+                SaveData.saveLibrary();
             }
         }
         if(e.getSource().equals(libraryButton)) {
@@ -137,6 +139,12 @@ public class LeftToolbar extends JPanel implements ActionListener {
             showSongsPanel.createNorthPanel("Favorites");
             showSongsPanel.setCurrentSelectedPlaylist(Library.favorites);
             showSongsPanel.updatePanelBySong(Library.favorites.getSongs() , showSongsPanel);
+        }
+        if(e.getSource().equals(sharedPlaylistButton)){
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("SharedPlaylist");
+            showSongsPanel.setCurrentSelectedPlaylist(Library.sharedPlaylist);
+            showSongsPanel.updatePanelBySong(Library.sharedPlaylist.getSongs() , showSongsPanel);
         }
         if(e.getSource().equals(searchButton)){
             String name = searchTextField.getText();

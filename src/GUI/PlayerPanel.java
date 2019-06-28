@@ -226,6 +226,8 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             isPlaying = true ;
             timer.setSongStatus(true);
             timer.start();
+
+            SaveData.saveLastSong(newSong);
         }catch (JavaLayerException | NullPointerException | IOException e){e.printStackTrace();}
     }
 
