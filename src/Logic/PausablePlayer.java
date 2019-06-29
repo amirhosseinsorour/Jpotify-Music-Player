@@ -100,4 +100,8 @@ public class PausablePlayer {
         }
     }
 
+    public void setVolume(float value){
+        player.setVol(value);
+    }
+
 }

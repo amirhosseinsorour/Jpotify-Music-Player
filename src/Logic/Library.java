@@ -4,21 +4,12 @@ import java.util.ArrayList;
 
 public class Library {
 
-    public static ArrayList<Song> allSongs ;
-    public static ArrayList<Album> albums ;
-    public static ArrayList<Artist> artists ;
-    public static ArrayList<Playlist> playlists ;
-    public static Favorites favorites ;
-    public static SharedPlaylist sharedPlaylist ;
-
-    public Library() {
-        allSongs = new ArrayList<>();
-        albums = new ArrayList<>();
-        artists = new ArrayList<>();
-        playlists = new ArrayList<>();
-        favorites = new Favorites();
-        sharedPlaylist = new SharedPlaylist();
-    }
+    public static ArrayList<Song> allSongs = new ArrayList<>();
+    public static ArrayList<Album> albums = new ArrayList<>() ;
+    public static ArrayList<Artist> artists = new ArrayList<>();
+    public static ArrayList<Playlist> playlists = new ArrayList<>();
+    public static Favorites favorites = new Favorites();
+    public static SharedPlaylist sharedPlaylist = new SharedPlaylist();
 
     public static void addSong(Song song){
         if(isNewSong(song))

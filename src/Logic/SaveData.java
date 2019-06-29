@@ -1,5 +1,7 @@
 package Logic;
 
+import GUI.PlayerPanel;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -89,6 +91,8 @@ public class SaveData {
                     Library.sharedPlaylist.addSong(new Song(scanner.nextLine()));
                 }catch (Exception ignored){}
             }
+
+            PlayerPanel.songQueue = Library.allSongs ;
         }catch (FileNotFoundException ignored){}
     }
 }

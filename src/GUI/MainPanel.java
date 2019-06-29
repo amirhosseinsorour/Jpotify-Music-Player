@@ -2,6 +2,7 @@ package GUI;
 
 import Logic.Library;
 import Logic.SaveData;
+import Logic.Song;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,8 @@ public class MainPanel extends JFrame {
 
         showSongsPanel.createNorthPanel("Library");
         showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
+
+        setVisible(true);
     }
 
     public static void updateSongsPanel(){

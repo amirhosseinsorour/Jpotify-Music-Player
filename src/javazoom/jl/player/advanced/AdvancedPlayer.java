@@ -240,32 +240,6 @@ public class AdvancedPlayer
 		listener.playbackFinished(createEvent(PlaybackEvent.STOPPED));
 		close();
 	}
-	/*public boolean setGain(float newGain) {
-		if (audio instanceof JavaSoundAudioDevice) {
-			System.out.println("InstanceOf");
-			JavaSoundAudioDevice jsAudio = (JavaSoundAudioDevice) audio;
-			try {
-				jsAudio.write(null, 0, 0);
-			} catch (JavaLayerException ex) {
-				ex.printStackTrace();
-			}
-			return jsAudio.setLineGain(newGain);
-		}
-		return false;
-	}*/
-//	public boolean setGain(float newGain) {
-//		if (audio instanceof JavaSoundAudioDevice) {
-//			System.out.println("InstanceOf");
-//			JavaSoundAudioDevice jsAudio = (JavaSoundAudioDevice) audio;
-//			try {
-//				jsAudio.write(null, 0, 0);
-//			} catch (JavaLayerException ex) {
-//				ex.printStackTrace();
-//			}
-//			return jsAudio.setLineGain(newGain);
-//		}
-//		return false;
-//	}
 
 	public void setVol(float value){
 		if(this.audio instanceof JavaSoundAudioDevice){
@@ -273,17 +247,6 @@ public class AdvancedPlayer
 			audioDevice.setLineGain(value);
 		}
 	}
-//	public void setGain(float newGain) {
-//		if (audio instanceof JavaSoundAudioDevice) {
-//			System.out.println("InstanceOf");
-//			JavaSoundAudioDevice jsAudio = (JavaSoundAudioDevice) audio;
-//			try {
-//				jsAudio.write(null, 0, 0);
-//			} catch (JavaLayerException ex) {
-//				ex.printStackTrace();
-//			}
-//			return jsAudio.setLineGain(newGain);
-//		}
-//		return false;
-//	}
+
+
 }

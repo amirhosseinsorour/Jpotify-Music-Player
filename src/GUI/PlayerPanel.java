@@ -6,6 +6,8 @@ import javax.swing.event.ChangeListener;
 
 import Logic.*;
 import javazoom.jl.decoder.JavaLayerException;
+import org.omg.PortableServer.THREAD_POLICY_ID;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
@@ -22,8 +24,10 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
     private SongTimer timer ;
     private PausablePlayer player ;
     private boolean isPlaying = false ;
-    private boolean isReapet = false ;
+    private boolean isRepeat = false ;
     private boolean isShuffle = false ;
+    private boolean isMute = false ;
+    private float volumeValue ;
     private JLabel songPicLabel ;
     private JLabel songTitle ;
     private JLabel songArtist;
@@ -137,6 +141,7 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         songSlider = new JSlider();
         songSlider.setBackground(new Color(0xE20B1E35));
         songSlider.setMinimum(0);
+        songSlider.setMaximum((int)nowPlayingSong.getLengthInSeconds());
         songSlider.setValue(0);
         songSliderPanel.add(songSlider , BorderLayout.CENTER);
         gbc.gridy = 1 ;
@@ -158,9 +163,10 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         volumeIcon.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\Volume.png").getImage().getScaledInstance(20,20,Image.SCALE_DEFAULT)));
         volumePanel.add(volumeIcon , BorderLayout.WEST);
 
-        volume = new JSlider(0,100,50);
+        volume = new JSlider(-40,40,0);
         volume.setBackground(new Color(0x3E769C));
-        volume.setMinorTickSpacing(10);
+        volume.setMinorTickSpacing(8);
+        volumeValue = 0 ;
         volume.setPaintTicks(true);
         volume.addChangeListener(this);
         volumePanel.add(volume , BorderLayout.CENTER);
@@ -222,18 +228,23 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             songTotalLengthLabel.setText(nowPlayingSong.getSongLength());
             songCurrentTimePassed.setText("0:00");
 
+            timer.start();
             player.play();
+            if(!isMute) {
+                Thread.sleep(10);
+                player.setVolume(volumeValue);
+            }
             isPlaying = true ;
             timer.setSongStatus(true);
-            timer.start();
+
 
             SaveData.saveLastSong(newSong);
-        }catch (JavaLayerException | NullPointerException | IOException e){e.printStackTrace();}
+        }catch (JavaLayerException | NullPointerException | IOException | InterruptedException e){e.printStackTrace();}
     }
 
     private void updatePanelByDefault(){
         Song nextSong ;
-        if(isReapet)
+        if(isRepeat)
             nextSong = findSong(REPEAT_SONG);
         else if(isShuffle)
             nextSong = findSong(SHUFFLE_SONG);
@@ -336,20 +347,20 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
                 updatePanel(previousSong);
         }
         if(e.getSource().equals(repeat)){
-            if(isReapet){
-                isReapet = false ;
+            if(isRepeat){
+                isRepeat = false ;
                 repeat.setBackground(new Color(0x3E769C));
             }
             else {
                 isShuffle = false ;
                 shuffle.setBackground(new Color(0x3E769C));
-                isReapet = true ;
+                isRepeat = true ;
                 repeat.setBackground(new Color(0x344C68));
             }
         }
         if(e.getSource().equals(shuffle)){
             if(!isShuffle){
-                isReapet = false ;
+                isRepeat = false ;
                 repeat.setBackground(new Color(0x3E769C));
                 isShuffle = true ;
                 shuffle.setBackground(new Color(0x344C68));
@@ -357,6 +368,21 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             else {
                 isShuffle = false ;
                 shuffle.setBackground(new Color(0x3E769C));
+            }
+        }
+        if(e.getSource().equals(mute)){
+            try {
+                Thread.sleep(10);
+            }catch (InterruptedException ignored){}
+            if(isMute) {
+                player.setVolume(volumeValue);
+                mute.setBackground(new Color(0x3E769C));
+                isMute = false ;
+            }
+            else {
+                player.setVolume(-80);
+                mute.setBackground(new Color(0x344C68));
+                isMute = true ;
             }
         }
         if(e.getSource().equals(addToPlaylist)){
@@ -378,6 +404,9 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 
     @Override
     public void stateChanged(ChangeEvent e) {
+        volumeValue = ((JSlider)e.getSource()).getValue() ;
+        if(!isMute)
+            player.setVolume(volumeValue);
     }
 
     private class AddToPlaylistListener implements ActionListener{
@@ -407,12 +436,17 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
                 @Override
                 public void mouseReleased(MouseEvent event) {
                     super.mouseReleased(event);
-                    System.out.println(slider.getValue());
                     try {
                         player.close();
                         player = new PausablePlayer(nowPlayingSong , slider.getValue());
                         player.play();
-                    }catch (JavaLayerException | FileNotFoundException e){e.printStackTrace();}
+                        Thread.sleep(10);
+                        if(isMute)
+                            player.setVolume(-80);
+                        else
+                            player.setVolume(volumeValue);
+
+                    }catch (JavaLayerException | FileNotFoundException | InterruptedException e){e.printStackTrace();}
                 }
             });
         }
@@ -452,12 +486,6 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             return minute + ":" + ( (second<10) ? ("0" + second) : (second) ) ;
         }
 
-        public void stateChanged(ChangeEvent e) {
-            if(e.getSource().equals(slider)){
-//                System.out.println(slider.getValue());
-//                player.seek(slider.getValue());
-            }
-        }
     }
 
 }
