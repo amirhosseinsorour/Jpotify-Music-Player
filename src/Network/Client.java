@@ -3,7 +3,9 @@ package Network;
 
 import GUI.PlayerPanel;
 import Logic.Library;
+import Logic.SharedPlaylist;
 import Logic.Song;
+import Logic.SongInfo;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -121,8 +123,8 @@ public class Client {
                     for (int i = 0; i <number ; i++) {
                         System.out.println("enter your friend name:");
                         to1 = scanner.next();
-                        for (int j = 0; j< Library.allSongs.size(); j++) {
-                            sendFile(to1,Library.allSongs.get(j).getAddress());
+                        for (int j = 0; j< Library.sharedPlaylist.getSongs().size(); j++) {
+                            sendFile(to1,Library.sharedPlaylist.getSongs().get(j).getAddress());
                         }
                     }
 

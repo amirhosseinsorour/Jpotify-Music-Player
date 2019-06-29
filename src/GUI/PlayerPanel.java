@@ -6,7 +6,7 @@ import javax.swing.event.ChangeListener;
 
 import Logic.*;
 import javazoom.jl.decoder.JavaLayerException;
-import org.omg.PortableServer.THREAD_POLICY_ID;
+//import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.awt.*;
 import java.awt.event.*;
