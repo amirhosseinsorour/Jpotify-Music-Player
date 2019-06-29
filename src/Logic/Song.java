@@ -19,8 +19,8 @@ public class Song extends Mp3File{
     /**get the title of the song
      * @return a string that is the title of song
      */
-    public String getTitle(){
-        String title = "";
+      public String getTitle(){
+         String  title = "";
         if(hasId3v1Tag())//if the format of our song is Id3v1tag
             title = getId3v1Tag().getTitle();
         else if(hasId3v2Tag())

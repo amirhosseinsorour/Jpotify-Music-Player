@@ -1,6 +1,9 @@
 package Network;
 
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,13 +58,13 @@ public class ClientManager implements Runnable {
                     System.out.println("Good Bye " + IP);
                     break;
 
-                } /*else if (command.equals("ADD")) {
+                } else if (command.equals("ADD")) {
 
                     // read operands a,b from client
                     String a = reader.readLine();
                     String b = reader.readLine();
 
-                    System.out.println(name + " :[ADD " + a + "," + b + "]");
+                    System.out.println(IP + " :[ADD " + a + "," + b + "]");
                     // calculate (a+b) then send it to client
                     writer.println("RESULT");
                     writer.println(add(a, b));
@@ -71,7 +74,7 @@ public class ClientManager implements Runnable {
                     String expression = reader.readLine();
                     // evaluate the expression
                     String ans = eval(expression);
-                    System.out.println(name + " EVAL [" + expression + "]=" + ans);
+                    System.out.println(IP + " EVAL [" + expression + "]=" + ans);
 
                     // send result to client
                     writer.println("RESULT");
@@ -81,13 +84,15 @@ public class ClientManager implements Runnable {
                     // read message from client
                     String msg = reader.readLine();
 
-                    System.out.println(name + "ECHO [" + msg + "]");
+                    System.out.println(IP+ "ECHO [" + msg + "]");
 
                     // echo message !
                     writer.println("RESULT");
                     writer.println("[" + msg + "]");
 
                 } else if (command.equals("SCHT")) {
+
+
                     String to = reader.readLine();
                     String text = reader.readLine();
 
@@ -96,7 +101,12 @@ public class ClientManager implements Runnable {
                     String text = reader.readLine();
 
                     sendTextToAllClients(text);
-                }*/ else if (command.equals("SFILE")) {
+                }
+
+
+
+
+                 else if (command.equals("SFILE")) {
                     String fileName = reader.readLine();
                     String to = reader.readLine();
 
@@ -113,7 +123,7 @@ public class ClientManager implements Runnable {
         }
     }
 
-    /*private String add(String a, String b) {
+    private String add(String a, String b) {
         return "" + (Integer.parseInt(a) + Integer.parseInt(b));
     }
 
@@ -131,15 +141,17 @@ public class ClientManager implements Runnable {
     }
 
     private void sendTextToAnotherClient(String to, String text) {
+
+
         // first find another client ("to") ClientManager object
         ClientManager anotherClient = serverHolder.findClientManager(to);
         if (anotherClient == null)
             return;
-        anotherClient.sendText(name, text);
+        anotherClient.sendText(IP, text);
     }
 
     private void sendText(String from, String text) {
-        writer.println("CHT");
+        writer.println("SCHT");
         writer.println(from);
         writer.println(text);
     }
@@ -148,9 +160,9 @@ public class ClientManager implements Runnable {
         // find all client managers
         // and for each of them use sendText method to send message
         for (ClientManager cm : serverHolder.findAllClientManagers()) {
-            cm.sendText(name, text);
+            cm.sendText(IP, text);
         }
-    }*/
+    }
 
 
 

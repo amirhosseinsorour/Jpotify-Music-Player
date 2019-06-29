@@ -1,7 +1,9 @@
 package Network;
 
 
+import GUI.PlayerPanel;
 import Logic.Library;
+import Logic.Song;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -20,7 +22,7 @@ import java.util.Scanner;
 public class Client {
     Socket mSocket;
     int port = 9093;
-    String serverAddress = "localhost";
+    String serverAddress = "192.168.43.141";
 
     InputStream fromServerStream;
     OutputStream toServerStream;
@@ -77,9 +79,10 @@ public class Client {
                     //  + "1)add two number\n"
                     //+ "2)evaluate an expression\n"
                     //  + "3)echo\n"
-                    //  + "4)single cht!\n"
+
                     // + "5)group cht!\n"
-                    + "1)send file:\n");
+                    + "1)send file:\n" +
+                    "+ \"2)single c\\n\"");
 
 
 
@@ -121,7 +124,6 @@ public class Client {
                         for (int j = 0; j< Library.allSongs.size(); j++) {
                             sendFile(to1,Library.allSongs.get(j).getAddress());
                         }
-
                     }
 
 
@@ -133,8 +135,17 @@ public class Client {
                // case 7:
 
                   //  bye();
+                case 2:
+                    System.out.println("Enter your freind name");
+                    String to = sc.nextLine();
 
+                   // System.out.println("Enter your message");
+                    //String text = sc.nextLine();
+                    System.out.println("title:"+ PlayerPanel.nowPlayingSong.getTitle());
+
+                    sendSingleCht(to, PlayerPanel.nowPlayingSong.getTitle());
                     break;
+
 
             }
         }
