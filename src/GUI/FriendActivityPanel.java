@@ -11,6 +11,11 @@ public class FriendActivityPanel extends JPanel implements ActionListener{
     private JButton addFriend ;
     private HashMap<JButton , String> friends ;
 
+    /**
+     * panel for showing friends name and activity
+     * and add new friend
+     */
+
     public FriendActivityPanel() {
         setLayout(new GridBagLayout());
         setSize(100, 200);
@@ -42,6 +47,12 @@ public class FriendActivityPanel extends JPanel implements ActionListener{
         add(addFriend, gbc);
 
     }
+
+    /**
+     *
+     * add new friend to the panel
+     * @param name username of the new friend
+     */
 
     private void addNewFriend(String name){
         JButton newFriend = new JButton(name);

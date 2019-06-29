@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InfoPanel extends JFrame {
+    /**
+     * a panel just for showing the app name ,
+     * constructors , app logo , version ,
+     * date authored , and username
+     */
 
     public InfoPanel() {
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

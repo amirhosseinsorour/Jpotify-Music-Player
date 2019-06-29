@@ -51,6 +51,13 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
     private static final int REPEAT_SONG = 0 ;
     private static final int SHUFFLE_SONG = 2 ;
 
+    /**
+     * panel for playing certain song which supports many options
+     * such as play , pause , repeat , shuffle ...
+     * song info is also shown while playing
+     * @throws Exception may be thrown while playing music
+     */
+
     public PlayerPanel() throws Exception{
         setLayout(new BorderLayout());
         player = new PausablePlayer(nowPlayingSong , 0);
@@ -68,21 +75,16 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         JPanel songInfoInnerPanel = new JPanel();
         songInfoInnerPanel.setBackground(new Color(0x3E769C));
         songInfoInnerPanel.setLayout(new GridBagLayout());
-//        songInfoInnerPanel.setBackground(new Color(0x4B829C));
 
         songTitle = new JLabel(nowPlayingSong.getTitle());
         gbc.insets = new Insets(0 ,10,0,10);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
         songTitle.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
-//        JPanel songTitlePanel = new JPanel();
-//        songTitlePanel.add(songTitle);
-//        songTitlePanel.setBackground(new Color(0x4B829C));
         songInfoInnerPanel.add(songTitle , gbc);
 
         songArtist = new JLabel(nowPlayingSong.getArtist());
         gbc.insets = new Insets(70 ,10,70,10);
         gbc.gridy = 1 ;
-//        songArtist.setForeground(new Color(0xFF211D));
         songArtist.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 20));
         songInfoInnerPanel.add(songArtist , gbc);
 
@@ -173,14 +175,12 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 
         gbc.insets = new Insets(5,5,5,5);
         gbc.gridx = 0 ;     gbc.gridy = 0 ;
-//        gbc.gridwidth = 3 ;
         optionPanel.add(volumePanel , gbc);
 
         JPanel rightButtonsPanel = new JPanel();
         rightButtonsPanel.setBackground(new Color(0xE20B1E35));
         rightButtonsPanel.setLayout(new GridBagLayout());
         rightButtonsPanel.add(mute , gbc);
-//        gbc.gridwidth = 1 ;
         gbc.gridy = 1 ;
         rightButtonsPanel.add(addToPlaylist , gbc);
         gbc.gridy = 2 ;
@@ -192,13 +192,24 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         add(optionPanel , BorderLayout.EAST);
     }
 
+    /**
+     * updates the song playing at the moment
+     * @param newSong new song to play
+     */
+
     public static void setSong(Song newSong) {
         nowPlayingSong = newSong ;
     }
 
+
     public void setShowSongsPanel(ShowSongsPanel showSongsPanel) {
         this.showSongsPanel = showSongsPanel;
     }
+
+    /**
+     * updates player with new song
+     * @param newSong new song info is shown in the player
+     */
 
     public void updatePanel(Song newSong){
         try {
@@ -240,10 +251,15 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             isPlaying = true ;
             timer.setSongStatus(true);
 
-
             SaveData.saveLastSong(newSong);
         }catch (JavaLayerException | NullPointerException | IOException | InterruptedException e){e.printStackTrace();}
     }
+
+    /**
+     * panel must be updated by default when song reaches eof
+     * default update depends on whether repeat or shuffle button was pressed
+     *
+     */
 
     private void updatePanelByDefault(){
         Song nextSong ;
@@ -289,6 +305,14 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         addToPlaylist.setText("Add To Playlist");
         addToFavorites.setText("Add To Favorites");
     }
+
+    /**
+     *
+     * @param flag must be one of REPEAT_SONG , SHUFFLE_SONG ,
+     * NEXT_SONG , PREVIOUS_SONG
+     * @return song according to flag
+     * noted that songs are sorted in reverse order
+     */
 
     private Song findSong(int flag){
         switch (flag){
@@ -405,12 +429,20 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         }
     }
 
+    /**
+     *sets the songs volume according to slider value
+     */
+
     @Override
     public void stateChanged(ChangeEvent e) {
         volumeValue = ((JSlider)e.getSource()).getValue() ;
         if(!isMute)
             player.setVolume(volumeValue);
     }
+
+    /**
+     * Listener for songs as buttons to be added to a certain playlist
+     */
 
     private class AddToPlaylistListener implements ActionListener{
         @Override
@@ -430,6 +462,13 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         private int songLength ;
         private JSlider slider ;
         private JLabel timePassed ;
+
+
+        /**
+         * a timer for showing time passed since song was played
+         * shows times passed as a label in a specified format
+         * ability to play song from a specified time by moving slider
+         */
 
         public SongTimer(JSlider slider , JLabel timePassed) {
             timer = new Timer();
@@ -462,6 +501,11 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
             this.songLength = songLength;
         }
 
+        /**
+         * sets task for timer
+         * obvious that task is moving slider according to timePassed
+         */
+
         public void setTask(){
             task = new TimerTask() {
 
@@ -480,6 +524,11 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
         public void start(){
             timer.scheduleAtFixedRate(task,0,1000);
         }
+
+        /**
+         * converts time passed to a format to be shown
+         * @return time passed as a string in a specified format
+         */
 
         private String getTimePassed(){
             int timePassed = slider.getValue();

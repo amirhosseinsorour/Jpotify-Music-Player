@@ -8,9 +8,16 @@ import java.util.Scanner;
 
 public class SaveData {
 
+    /**
+     * save all songs in the library with address
+     */
     public static void saveLibrary() {
         savePlaylist(Library.allSongs , "LibrarySongs");
     }
+
+    /**
+     *saves just the names of the playlists
+     */
 
     public static void savePlaylists() {
         try {
@@ -23,10 +30,19 @@ public class SaveData {
         } catch (IOException ignored){}
     }
 
+    /**
+     * deletes playlist file when playlist is removed
+     * @param playlist is removed of saved data
+     */
     public static void deletePlaylist(Playlist playlist){
         File playlistToRemove = new File("src\\SavedData\\Playlists\\" + playlist.getName() + ".txt");
         playlistToRemove.delete();
     }
+
+    /**
+     *saves address of all songs in a certain playlist
+     * @param songs all songs in a certain playlist
+     */
 
     public static void savePlaylist(ArrayList<Song> songs , String path){
         try {
@@ -38,6 +54,10 @@ public class SaveData {
         }catch (IOException e){e.printStackTrace();}
     }
 
+    /**
+     * saves the last played song
+     * @param song the last song played
+     */
     public static void saveLastSong(Song song){
         try {
             PrintWriter printWriter = new PrintWriter(new FileWriter("src\\SavedData\\LastPlayedSong.txt" , false));
@@ -54,6 +74,10 @@ public class SaveData {
         }
     }
 
+    /**
+     * @return username if exists
+     */
+
     public static String getUserName(){
         String userName ;
         try {
@@ -64,6 +88,9 @@ public class SaveData {
         return (userName.isEmpty()) ? null : userName ;
     }
 
+    /**
+     * @param userName username is saved
+     */
     public static void saveUserName(String userName){
         try {
             PrintWriter printWriter = new PrintWriter(new FileWriter("src\\SavedData\\Username.txt" , false));
@@ -71,6 +98,10 @@ public class SaveData {
             printWriter.close();
         }catch (IOException ignored){}
     }
+
+    /**
+     * retrieves all data saved in the last run
+     */
 
     public static void retrieveData(){
         try {

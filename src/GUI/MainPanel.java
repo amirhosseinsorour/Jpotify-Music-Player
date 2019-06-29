@@ -15,6 +15,12 @@ public class MainPanel extends JFrame {
     private static ShowSongsPanel showSongsPanel ;
     private static JScrollPane scrollPane ;
 
+    /**
+     * MainPanel of GUI consisting of leftToolbar ,
+     * playerPanel , showSongs panel and friendActivity Panel
+     * @throws Exception any kind of exception may be thrown
+     */
+
     public MainPanel() throws Exception{
         super("JPotify Music Player");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -64,6 +70,10 @@ public class MainPanel extends JFrame {
         showSongsPanel.createNorthPanel("Library");
         showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
     }
+
+    /**
+     * updates panel in order to add new songs
+     */
 
     public static void updateSongsPanel(){
         showSongsPanel = new ShowSongsPanel();

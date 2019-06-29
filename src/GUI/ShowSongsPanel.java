@@ -40,6 +40,15 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     static HashMap<JButton, Playlist> getPlaylistByButton;
     private static GridBagConstraints gbc;
 
+    /**
+     * center panel for showing songs , albums , artists ,
+     * playlists , favorites ...
+     *
+     * songs are played when clicked
+     *
+     * every button has a specified actionListener
+     */
+
     ShowSongsPanel() {
         getSongByButton = new HashMap<>();
         getAlbumByButton = new HashMap<>();
@@ -68,6 +77,12 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         return optionPanelType;
     }
 
+    /**
+     * updates center panel by an arraylist of songs
+     * @param songsToUpdate songs to be shown in center panel
+     * @param actionListener Listener according to button task
+     */
+
     void updatePanelBySong(ArrayList<Song> songsToUpdate, ActionListener actionListener) {
         songsPanel.removeAll();
         gbc.gridx = 0;
@@ -89,6 +104,12 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
+    /**
+     * updates panel by artists
+     * all artists are shown
+     * songs of the artist is shown when artist is clicked
+     */
+
     private void updatePanelByArtist() {
         songsPanel.removeAll();
         gbc.gridx = 0;
@@ -109,6 +130,12 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
+    /**
+     * updates panel by albums
+     * all albums are shown
+     * songs of the album is shown when album is clicked
+     */
+
     private void updatePanelByAlbum() {
         songsPanel.removeAll();
         gbc.gridx = 0;
@@ -128,6 +155,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.repaint();
         songsPanel.revalidate();
     }
+
+    /**
+     * updates panel by a specified playlist
+     * all songs of the playlist is shown when the playlist is clicked
+     */
 
     void updatePanelByPlaylist(ActionListener actionListener) {
         songsPanel.removeAll();
@@ -156,6 +188,8 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         songsPanel.revalidate();
     }
 
+
+
     private void addComponentToSongsPanel(JButton button) {
         songsPanel.add(button, gbc);
         if (++gbc.gridx == 3) {
@@ -163,6 +197,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             gbc.gridy++;
         }
     }
+
+    /**
+     * creates an option panel at the north of the center panel
+     * @param type type of option panel
+     */
 
     void createNorthPanel(String type) {
         if (optionPanelType.equals(type))
@@ -296,6 +335,8 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         optionPanelType = type;
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton buttonPressed = (JButton) e.getSource();
@@ -391,6 +432,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
     private class AddListener implements ActionListener {
 
+        /**
+         * listener for adding a song to a playlist
+         */
+
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton buttonPressed = (JButton) e.getSource();
@@ -407,6 +452,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
     private class RemoveListener implements ActionListener {
 
+        /**
+         * listener for adding a song to a playlist
+         */
+
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton buttonPressed = (JButton) e.getSource();
@@ -420,6 +469,10 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Listener for selecting song of a playlist to change position
+     */
+
     private class EditListener implements ActionListener {
         private Song songToChangePosition;
 
@@ -431,6 +484,11 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             currentSelectedPlaylist.removeSong(songToChangePosition);
             updatePanelBySong(currentSelectedPlaylist.getSongs(), new ChangePositionListener());
         }
+
+        /**
+         * Listener for changing position of a selected song
+         * Songs position will be before the selected song
+         */
 
         private class ChangePositionListener implements ActionListener {
 

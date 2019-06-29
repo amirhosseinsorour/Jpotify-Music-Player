@@ -7,6 +7,11 @@ import Network.Client;
 import javax.swing.*;
 
 public class Main {
+    /**
+     * includes the main method
+     * gets the username at first
+     * needs a first song to create the whole panel
+     */
     public static String userName ;
     private static MainPanel mainPanel ;
 
@@ -16,7 +21,6 @@ public class Main {
             userName = JOptionPane.showInputDialog(null, "Enter New UserName", "Login", JOptionPane.INFORMATION_MESSAGE);
             SaveData.saveUserName(userName);
         }
-        mainPanel.setVisible(true);
     }
 
     public static void main(String[] args) throws Exception {
@@ -25,8 +29,9 @@ public class Main {
             song = new Song("src\\SavedData\\Kouli.mp3");
         PlayerPanel.setSong(song);
         SaveData.retrieveData();
-        mainPanel = new MainPanel();
         getUserName();
+        mainPanel = new MainPanel();
+        mainPanel.setVisible(true);
         new Client();
     }
 }
