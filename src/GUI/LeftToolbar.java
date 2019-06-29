@@ -21,6 +21,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
     private JButton addToLibraryButton ;
     private JButton jpotifyLogo ;
     private JTextField searchTextField ;
+    private InfoPanel infoPanel ;
     private ShowSongsPanel showSongsPanel ;
     private GridBagConstraints gbc ;
 
@@ -32,6 +33,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.ipadx  = 150 ;
         setBackground(new Color(0xD6000821, true));
+        infoPanel = new InfoPanel();
 
         JPanel searchField = new JPanel();
         searchField.setLayout(new BorderLayout());
@@ -76,6 +78,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         initializeButton(addToLibraryButton , "Add to Library" , "src\\Icons\\Add.png");
 
         jpotifyLogo = new JButton();
+        jpotifyLogo.addActionListener(this);
         jpotifyLogo.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\JPotify.png").getImage().getScaledInstance(200,60,Image.SCALE_AREA_AVERAGING)));
         gbc.gridy ++ ;
 
@@ -157,6 +160,9 @@ public class LeftToolbar extends JPanel implements ActionListener {
             showSongsPanel.createNorthPanel("Results for \"" + name + "\" :");
             showSongsPanel.updatePanelBySong(foundSongs , showSongsPanel);
             searchTextField.setText("Search Music");
+        }
+        if(e.getSource().equals(jpotifyLogo)){
+            infoPanel.setVisible(true);
         }
     }
 }

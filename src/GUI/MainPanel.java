@@ -11,6 +11,7 @@ public class MainPanel extends JFrame {
 
     private LeftToolbar leftToolbar ;
     private PlayerPanel playerPanel ;
+    private FriendActivityPanel friendActivityPanel ;
     private static ShowSongsPanel showSongsPanel ;
     private static JScrollPane scrollPane ;
 
@@ -19,6 +20,7 @@ public class MainPanel extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("src\\Icons\\JPotifyApp.png").getImage());
         setSize(1600,900);
+        setMinimumSize(new Dimension(1500 , 900));
         setLocation(50,50);
         setLayout(new BorderLayout());
 
@@ -40,16 +42,27 @@ public class MainPanel extends JFrame {
         leftToolbar.setShowSongsPanel(showSongsPanel);
         leftPanel.add(leftToolbar , BorderLayout.NORTH);
 
-        JPanel justForColor = new JPanel();
-        justForColor.setBackground(new Color(0xD6000821,true));
-        leftPanel.add(justForColor , BorderLayout.CENTER);
+        JPanel justForLeftColor = new JPanel();
+        justForLeftColor.setBackground(new Color(0xD6000821,true));
+        leftPanel.add(justForLeftColor , BorderLayout.CENTER);
 
         add(leftPanel , BorderLayout.WEST);
 
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        friendActivityPanel = new FriendActivityPanel();
+        rightPanel.add(friendActivityPanel , BorderLayout.NORTH);
+
+        JPanel justForRightColor = new JPanel();
+        justForRightColor.setBackground(new Color(0xD6000821,true));
+        rightPanel.add(justForRightColor , BorderLayout.CENTER);
+
+        JScrollPane rightScrollPane = new JScrollPane(rightPanel);
+
+        add(rightScrollPane , BorderLayout.EAST);
+
         showSongsPanel.createNorthPanel("Library");
         showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
-
-        setVisible(true);
     }
 
     public static void updateSongsPanel(){

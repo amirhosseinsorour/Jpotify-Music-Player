@@ -54,7 +54,25 @@ public class SaveData {
         }
     }
 
-    public static void retriveData(){
+    public static String getUserName(){
+        String userName ;
+        try {
+            userName = new Scanner(new FileReader("src\\SavedData\\Username.txt")).nextLine();
+        }catch (Exception ignored){
+            return null ;
+        }
+        return (userName.isEmpty()) ? null : userName ;
+    }
+
+    public static void saveUserName(String userName){
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter("src\\SavedData\\Username.txt" , false));
+            printWriter.println(userName);
+            printWriter.close();
+        }catch (IOException ignored){}
+    }
+
+    public static void retrieveData(){
         try {
             Scanner scanner = new Scanner(new FileReader("src\\SavedData\\LibrarySongs.txt"));
             while (scanner.hasNext()){

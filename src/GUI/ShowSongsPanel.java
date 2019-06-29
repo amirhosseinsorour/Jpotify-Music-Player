@@ -307,7 +307,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             updatePanelByArtist();
         else if (buttonPressed.equals(addNewPlaylist)) {
             String newPlaylistName = JOptionPane.showInputDialog(null, "Enter Playlist Name", "New Playlist", JOptionPane.INFORMATION_MESSAGE);
-            if (newPlaylistName == null) return;
+            if (newPlaylistName == null) return ;
             if (newPlaylistName.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Enter Valid Name!", "Create New Playlist", JOptionPane.ERROR_MESSAGE);
                 return;

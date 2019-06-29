@@ -230,9 +230,12 @@ public class PlayerPanel extends JPanel implements ActionListener , ChangeListen
 
             timer.start();
             player.play();
+            Thread.sleep(10);
             if(!isMute) {
-                Thread.sleep(10);
                 player.setVolume(volumeValue);
+            }
+            else {
+                player.setVolume(-80);
             }
             isPlaying = true ;
             timer.setSongStatus(true);
