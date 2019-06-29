@@ -1,15 +1,20 @@
 package GUI;
 
+import Logic.Song;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FriendActivityPanel extends JPanel implements ActionListener{
     private GridBagConstraints gbc ;
     private JButton addFriend ;
     private HashMap<JButton , String> friends ;
+    private ShowSongsPanel showSongsPanel ;
 
     /**
      * panel for showing friends name and activity
@@ -48,6 +53,10 @@ public class FriendActivityPanel extends JPanel implements ActionListener{
 
     }
 
+    public void setShowSongsPanel(ShowSongsPanel showSongsPanel) {
+        this.showSongsPanel = showSongsPanel;
+    }
+
     /**
      *
      * add new friend to the panel
@@ -58,6 +67,7 @@ public class FriendActivityPanel extends JPanel implements ActionListener{
         JButton newFriend = new JButton(name);
         newFriend.addActionListener(this);
         newFriend.setBackground(new Color(0x3E769C));
+        newFriend.setFocusPainted(false);
         friends.put(newFriend , name);
 
         gbc.gridy++ ;
@@ -76,7 +86,23 @@ public class FriendActivityPanel extends JPanel implements ActionListener{
             addNewFriend(name);
         }
         if(friends.keySet().contains(buttonPressed)){
-
+            String friendsName = friends.get(buttonPressed);
+            File friendSongsFolder = new File(friendsName);
+            if(friendSongsFolder.exists() && friendSongsFolder.isDirectory()){
+                File [] friendSongFiles = friendSongsFolder.listFiles();
+                if(friendSongFiles == null)
+                    return;
+                ArrayList<Song>  friendSongs = new ArrayList<>();
+                for(File file : friendSongFiles){
+                    try {
+                        Song song = new Song(file.getPath());
+                        friendSongs.add(song);
+                    }catch (Exception ignored){}
+                }
+                MainPanel.updateSongsPanel();
+                showSongsPanel.createNorthPanel("\"" + friendsName + "\" 's Shared Playlist : ");
+                showSongsPanel.updatePanelBySong(friendSongs , showSongsPanel);
+            }
         }
     }
 }

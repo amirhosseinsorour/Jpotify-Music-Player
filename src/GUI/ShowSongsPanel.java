@@ -28,6 +28,7 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
     private JLabel songsFound;
     private JLabel favoritesLabel;
     private JLabel sharedPlaylistLabel ;
+    private JLabel friendSharedPlaylistLabel ;
     private JLabel addToPlaylistLabel;
     private JLabel editPlaylistLabel;
     private JLabel changePositionLabel;
@@ -263,6 +264,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             sharedPlaylistLabel = new JLabel("Shared Playlist         ");
             sharedPlaylistLabel.setForeground(new Color(-1));
 
+            friendSharedPlaylistLabel = new JLabel();
+            friendSharedPlaylistLabel.setForeground(new Color(-1));
+
             addToPlaylistLabel = new JLabel("Select Playlist to Add :");
             addToPlaylistLabel.setForeground(new Color(-1));
 
@@ -274,6 +278,9 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
 
             songsFound = new JLabel();
             songsFound.setForeground(new Color(-1));
+
+            friendSharedPlaylistLabel = new JLabel();
+            friendSharedPlaylistLabel.setForeground(new Color(-1));
         }
         try {
             northOptionPanel.removeAll();
@@ -323,10 +330,15 @@ public class ShowSongsPanel extends JPanel implements ActionListener {
             case "AddToPlaylist":
                 northOptionPanel.add(addToPlaylistLabel);
                 break;
-            case "Results":
-                songsFound.setText(type);
-                northOptionPanel.add(songsFound);
-                break;
+            default:
+                if(type.contains("Results")){
+                    songsFound.setText(type);
+                    northOptionPanel.add(songsFound);
+                }
+                else if(type.contains("Shared Playlist")){
+                    friendSharedPlaylistLabel.setText(type);
+                    northOptionPanel.add(friendSharedPlaylistLabel);
+                }
         }
         northOptionPanel.repaint();
         northOptionPanel.revalidate();

@@ -57,6 +57,7 @@ public class MainPanel extends JFrame {
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
         friendActivityPanel = new FriendActivityPanel();
+        friendActivityPanel.setShowSongsPanel(showSongsPanel);
         rightPanel.add(friendActivityPanel , BorderLayout.NORTH);
 
         JPanel justForRightColor = new JPanel();
