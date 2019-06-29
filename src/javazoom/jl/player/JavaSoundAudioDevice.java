@@ -196,6 +196,8 @@ public class JavaSoundAudioDevice extends AudioDeviceBase
             volControl.setValue(newGain);
         }
     }
+
+
     /**
      * Runs a short test by playing a short silent sound.
      */
@@ -216,4 +218,5 @@ public class JavaSoundAudioDevice extends AudioDeviceBase
         }
 
     }
+
 }

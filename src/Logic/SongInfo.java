@@ -6,6 +6,10 @@ public abstract class SongInfo {
     ArrayList<Song> songs ;
     private String name;
 
+    /**
+     *superclass of playlist , album , artist
+     * never instantiated
+     */
     SongInfo(String name) {
         songs = new ArrayList<>();
         this.name = name ;

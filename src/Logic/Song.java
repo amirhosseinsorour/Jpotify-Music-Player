@@ -17,7 +17,6 @@ public class Song extends Mp3File{
     }
 
     /**get the title of the song
-     *
      * @return a string that is the title of song
      */
     public String getTitle(){
@@ -63,16 +62,10 @@ public class Song extends Mp3File{
         else return album ;
     }
 
-    public String getTrack(){
-        if(hasId3v1Tag())
-            return getId3v1Tag().getTrack();
-        else if(hasId3v2Tag())
-            return getId3v2Tag().getTrack();
-        else return "" ;
-    }
-
-    //getYear Here if necessary
-
+    /**
+     *
+     * @return image of song
+     */
     public ImageIcon getImage(){
         if(hasId3v2Tag() && getId3v2Tag().getAlbumImage() != null)
             return new ImageIcon(getId3v2Tag().getAlbumImage());
@@ -83,6 +76,11 @@ public class Song extends Mp3File{
         return songAddress;
     }
 
+    /**
+     * converts songs length in a format to be shown
+     * @return string with mentioned format
+     */
+
     public String getSongLength(){
         int time = (int)getLengthInSeconds();
         int minute = time / 60;
@@ -90,22 +88,13 @@ public class Song extends Mp3File{
         return minute + ":" + ( (second < 10) ? ("0" + second) : second );
     }
 
-    public void play() throws Exception {
-        FileInputStream input = new FileInputStream(songAddress);
-        Player player = new Player(input);
-        player.play();
-
-    }
-
     /**
-     * @return a boolean
+     * overriding equals method for song object
      */
     @Override
     public boolean equals(Object obj){
         Song song = (Song)obj ;
-        if(song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()) && song.getLength() == getLength())
-            return true ;
-        else return false ;
+        return ( song.getTitle().equals(this.getTitle()) && song.getArtist().equals(this.getArtist()) && song.getLength() == getLength() );
     }
 
 }

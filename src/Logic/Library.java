@@ -3,21 +3,22 @@ package Logic;
 import java.util.ArrayList;
 
 public class Library {
+    /**
+     * includes all songs , albums , artists
+     */
 
-    public static ArrayList<Song> allSongs ;
-    public static ArrayList<Album> albums ;
-    public static ArrayList<Artist> artists ;
-    public static ArrayList<Playlist> playlists ;
-    public static Favorites favorites ;
+    public static ArrayList<Song> allSongs = new ArrayList<>();
+    public static ArrayList<Album> albums = new ArrayList<>() ;
+    public static ArrayList<Artist> artists = new ArrayList<>();
+    public static ArrayList<Playlist> playlists = new ArrayList<>();
+    public static Favorites favorites = new Favorites();
+    public static SharedPlaylist sharedPlaylist = new SharedPlaylist();
 
-    public Library() {
-        allSongs = new ArrayList<>();
-        albums = new ArrayList<>();
-        artists = new ArrayList<>();
-        playlists = new ArrayList<>();
-        favorites = new Favorites();
-    }
-
+    /**
+     * adds song to library
+     * adds song to its album or artist arraylist
+     * @param song is added to library if new
+     */
     public static void addSong(Song song){
         if(isNewSong(song))
             allSongs.add(song);
@@ -45,6 +46,11 @@ public class Library {
         }
     }
 
+    /**
+     * checks if songs album is new or not
+     * @return the song's album if exists
+     */
+
     private static Album isNewAlbum(Song song){
         String albumName = song.getAlbum() ;
         try {
@@ -56,6 +62,11 @@ public class Library {
         return null ;
     }
 
+    /**
+     * checks if songs artist is new or not
+     * @return the song's artist if exists
+     */
+
     private static Artist isNewArtist(Song song){
         String artistName = song.getArtist() ;
         try {
@@ -66,6 +77,11 @@ public class Library {
         }catch (NullPointerException ignored){}
         return null ;
     }
+
+    /**
+     * checks if songs new or not
+     * @return true if found
+     */
 
     private static boolean isNewSong(Song newSong){
         for (Song song : allSongs){

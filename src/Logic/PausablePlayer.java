@@ -10,7 +10,6 @@ public class PausablePlayer {
     private final static int PLAYING = 1;
     private final static int PAUSED = 2;
     private final static int FINISHED = 3;
-    // the player actually doing all the work
     private AdvancedPlayer player;
     // locking object used to communicate with player thread
     private final Object playerLock = new Object();
@@ -98,6 +97,10 @@ public class PausablePlayer {
         } catch (final Exception e) {
             // ignore, we are terminating anyway
         }
+    }
+
+    public void setVolume(float value){
+        player.setVol(value);
     }
 
 }

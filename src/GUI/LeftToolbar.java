@@ -1,6 +1,7 @@
 package GUI;
 
 import Logic.Library;
+import Logic.SaveData;
 import Logic.Song;
 
 import javax.swing.*;
@@ -20,8 +21,22 @@ public class LeftToolbar extends JPanel implements ActionListener {
     private JButton addToLibraryButton ;
     private JButton jpotifyLogo ;
     private JTextField searchTextField ;
+    private InfoPanel infoPanel ;
     private ShowSongsPanel showSongsPanel ;
     private GridBagConstraints gbc ;
+
+    /**
+     * buttons of app for showing :
+     * all songs in the library
+     * all albums in the library
+     * all artists in the library
+     *
+     * search text field for searching by a substring of
+     * song's title , album or artist
+     *
+     * buttons to show playlist , favorites , sharedPlaylist
+     * button to show app Info
+     */
 
     LeftToolbar(){
         setLayout(new GridBagLayout());
@@ -31,6 +46,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL ;
         gbc.ipadx  = 150 ;
         setBackground(new Color(0xD6000821, true));
+        infoPanel = new InfoPanel();
 
         JPanel searchField = new JPanel();
         searchField.setLayout(new BorderLayout());
@@ -75,6 +91,7 @@ public class LeftToolbar extends JPanel implements ActionListener {
         initializeButton(addToLibraryButton , "Add to Library" , "src\\Icons\\Add.png");
 
         jpotifyLogo = new JButton();
+        jpotifyLogo.addActionListener(this);
         jpotifyLogo.setIcon(new ImageIcon(new ImageIcon("src\\Icons\\JPotify.png").getImage().getScaledInstance(200,60,Image.SCALE_AREA_AVERAGING)));
         gbc.gridy ++ ;
 
@@ -98,6 +115,8 @@ public class LeftToolbar extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+         // adds selected songs to library
+
         if(e.getSource().equals(addToLibraryButton)){
             JFileChooser jfc = new JFileChooser();
             jfc.setDialogTitle("Add new Song");
@@ -118,13 +137,20 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 MainPanel.updateSongsPanel();
                 showSongsPanel.createNorthPanel("Library");
                 showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
+                SaveData.saveLibrary();
             }
         }
+
+         // center panel is updated with library songs
+
         if(e.getSource().equals(libraryButton)) {
             MainPanel.updateSongsPanel();
             showSongsPanel.createNorthPanel("Library");
             showSongsPanel.updatePanelBySong(Library.allSongs , showSongsPanel);
         }
+
+        // center panel is updated with all playlists as buttons
+
         if(e.getSource().equals(playListsButton)){
             MainPanel.updateSongsPanel();
             showSongsPanel.createNorthPanel("Playlists");
@@ -132,12 +158,27 @@ public class LeftToolbar extends JPanel implements ActionListener {
                 showSongsPanel.updatePanelByPlaylist(showSongsPanel);
             }catch (NullPointerException ignored){}
         }
+
+        // center panel is updated with favorite songs
+
         if(e.getSource().equals(favoritesButton)){
             MainPanel.updateSongsPanel();
             showSongsPanel.createNorthPanel("Favorites");
             showSongsPanel.setCurrentSelectedPlaylist(Library.favorites);
             showSongsPanel.updatePanelBySong(Library.favorites.getSongs() , showSongsPanel);
         }
+
+        // center panel is updated with shared playlist songs
+
+        if(e.getSource().equals(sharedPlaylistButton)){
+            MainPanel.updateSongsPanel();
+            showSongsPanel.createNorthPanel("SharedPlaylist");
+            showSongsPanel.setCurrentSelectedPlaylist(Library.sharedPlaylist);
+            showSongsPanel.updatePanelBySong(Library.sharedPlaylist.getSongs() , showSongsPanel);
+        }
+
+        // searchs for songs with specified title , album or artist
+
         if(e.getSource().equals(searchButton)){
             String name = searchTextField.getText();
             ArrayList<Song> foundSongs = new ArrayList<Song>();
@@ -149,6 +190,12 @@ public class LeftToolbar extends JPanel implements ActionListener {
             showSongsPanel.createNorthPanel("Results for \"" + name + "\" :");
             showSongsPanel.updatePanelBySong(foundSongs , showSongsPanel);
             searchTextField.setText("Search Music");
+        }
+
+        // opens a panel showing app info
+
+        if(e.getSource().equals(jpotifyLogo)){
+            infoPanel.setVisible(true);
         }
     }
 }
